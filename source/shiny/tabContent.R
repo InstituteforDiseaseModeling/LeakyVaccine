@@ -43,6 +43,14 @@ getModelDescriptionContent <- function() {
     p("We are not modeling infections from the I to S compartments but rather only infections from the outside (non-trial) population."),  
     p("This model structure also removes the possibility of indirect effects from vaccination."),
     h3("Parameters"),
+    HTML(paste("<div class='code'>", 
+               "<div class='flex'><div class='definition'>beta</div><div>transmission rate (per contact)</div></div>",
+               "<div class='flex'><div class='definition'>c</div><div>exposure rate (serodiscordant sexual contacts per time)</div></div>",
+               "<div class='flex'><div class='definition'>prev</div><div>prevalence  (prevalence of viremic individuals)</div></div>",
+               "<div class='flex'><div class='definition'>lambda</div><div>lambda = beta * c * prev</div></div>",
+               "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
+               "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
+               "</div><br/>")),
     p("The infection rate per time step is a combination of population prevalence `prev` (of viremic individuals), the exposure rate
     (serodiscordant sexual exposure per time) `c`, and the transmission rate (per exposure) `p`. The per exposure effect of vaccination 
     is `epsilon`; `epsilon` is not time-varying (the per-exposure vaccine effect does not decay over time) and assumes a homogeneous effect 
@@ -50,18 +58,10 @@ getModelDescriptionContent <- function() {
     p("We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
     In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence. 
     But here we set the size of these groups at 10% high risk, 80% medium risk, and 10% low risk."),
-           
-    HTML(paste("<div class='code'>", 
-                      "<div class='flex'><div class='definition'>beta</div><div>transmission rate (per contact)</div></div>",
-                      "<div class='flex'><div class='definition'>c</div><div>exposure rate (serodiscordant sexual contacts per time)</div></div>",
-                      "<div class='flex'><div class='definition'>prev</div><div>prevalence  (prevalence of viremic individuals)</div></div>",
-                      "<div class='flex'><div class='definition'>lambda</div><div>lambda = beta * c * prev</div></div>",
-                      "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
-                      "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
-                      "</div><br/>")),
     p("The risk multiplier is an amalgam of increases in transmission risk that could be due to: higher per contact transmission risk;
-    higher exposure rate (number of contacts); or higher prevalence of HIV viremia in partners.</li></ol>"),
-    p("Individual risk of infection can vary for these separately or in combination."),
+    higher exposure rate (number of contacts); or higher prevalence of HIV viremia in partners. Individual risk of infection can vary for 
+    these separately or in combination."),
+    HTML("</div>"),
     titlePanel(htmlTemplate("template.html"))
   ))
 }
