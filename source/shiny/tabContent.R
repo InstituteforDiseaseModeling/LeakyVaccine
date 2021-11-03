@@ -39,7 +39,7 @@ getModelDescriptionContent <- function() {
     HTML("<div class='mainPanel main'>"),
     h3("Model structure"),
     p("We are modeling a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I). 
-    We start the epidemic model with all trial individuals in the S group; over time S individuals move into the I group as they become infected.", 
+    We start the epidemic model with all trial individuals in the S group; over time S individuals move into the I group as they become infected."), 
     p("We are not modeling infections from the I to S compartments but rather only infections from the outside (non-trial) population."),  
     p("This model structure also removes the possibility of indirect effects from vaccination."),
     h3("Parameters"),
