@@ -3,7 +3,7 @@
 # for creating Intro tab content
 #------------------------------------------------------------------------------
 getAboutContent <- function() {
-  return (tabPanel("About this tool",
+  return(tabPanel("About this tool",
                    
     HTML("<div class='mainPanel main'>"),
     h3("Using models to assess the impact of HIV exposure heterogeneity on trial vaccine efficacy measures"),
@@ -18,7 +18,7 @@ getAboutContent <- function() {
     HTML("<li>In acute infection studies it seems like many participants get infected early. What is the magnitude of this effect that might be due to frailty bias?</li>"),
     HTML("<li>Assist in the design or interpretation of HIV prevention trials, from this exposure heterogeneity framework.</li>"),
     HTML("</ol>"),
-    p("Thes separate tabs in this R Shiny app include:  
+    p("The separate tabs in this R Shiny app include:  
     Model Description; showing the structure of the model and the parameters included
     Initial Example Plots; showing how the model works and what simulated epidemic and trial outputs we focus on
     Parameter Sweeps; which allows the user to compare the impact of multiple parameter values in the same plots
@@ -41,17 +41,17 @@ getModelDescriptionContent <- function() {
     p("We are modeling a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I). 
     We start the epidemic model with all trial individuals in the S group; over time S individuals move into the I group as they become infected.", 
     p("We are not modeling infections from the I to S compartments but rather only infections from the outside (non-trial) population."),  
-    p("This model structure also removes the possibility of indirect effects from vaccination.  "),
+    p("This model structure also removes the possibility of indirect effects from vaccination."),
     h3("Parameters"),
     p("The infection rate per time step is a combination of population prevalence `prev` (of viremic individuals), the exposure rate
-    (serodiscordant sexual contacts per time) `c`, and the transmission rate (per contact) `p`. The per contact
-    effect of vaccination is `epsilon`."),
-    HTML("<ol type='1'><li> not time-varying (the per contact vaccine effect does not decay over time) and</li>  <li>assumes a homogeneous effect (does not vary by mark / viral genotype).</li></ol>"),
-    p("We are including three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
-    In reality we do not know the correct size of risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence. 
-    But for our first pass we set the size of these groups at 10% high risk, 80% medium risk, 10% low risk (and low risk is set at zero risk)."),
+    (serodiscordant sexual exposure per time) `c`, and the transmission rate (per exposure) `p`. The per exposure effect of vaccination 
+    is `epsilon`; `epsilon` is not time-varying (the per-exposure vaccine effect does not decay over time) and assumes a homogeneous effect 
+    (does not vary by viral genotype or individual traits)."),
+    p("We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
+    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence. 
+    But here we set the size of these groups at 10% high risk, 80% medium risk, and 10% low risk."),
            
-     HTML(paste("<div class='code'>", 
+    HTML(paste("<div class='code'>", 
                       "<div class='flex'><div class='definition'>beta</div><div>transmission rate (per contact)</div></div>",
                       "<div class='flex'><div class='definition'>c</div><div>exposure rate (serodiscordant sexual contacts per time)</div></div>",
                       "<div class='flex'><div class='definition'>prev</div><div>prevalence  (prevalence of viremic individuals)</div></div>",
@@ -59,16 +59,11 @@ getModelDescriptionContent <- function() {
                       "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
                       "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
                       "</div><br/>")),
-     HTML("<p>The risk multiplier is an amalgam of increases in transmission risk that could be due to:</p>"),
-     HTML("<ol type='1'>"),
-     HTML("<li>higher per contact transmission risk</li>"),
-     HTML("<li>higher exposure rate (number of contacts)</li>"),
-     HTML("<li>higher prevalence of HIV viremia in partners.</li></ol>"),
-     HTML("<p>Individual risk of infection can vary for these separately or in combination.</p>"),
-     titlePanel(htmlTemplate("template.html"))
-           
+    p("The risk multiplier is an amalgam of increases in transmission risk that could be due to: higher per contact transmission risk;
+    higher exposure rate (number of contacts); or higher prevalence of HIV viremia in partners.</li></ol>"),
+    p("Individual risk of infection can vary for these separately or in combination."),
+    titlePanel(htmlTemplate("template.html"))
   ))
-  
 }
 
 
