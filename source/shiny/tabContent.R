@@ -7,9 +7,10 @@ getAboutContent <- function() {
                    
     HTML("<div class='mainPanel main'>"),
     h3("Using models to assess the impact of HIV exposure heterogeneity on trial vaccine efficacy measures"),
-    p("It is hypothesized that exposure heterogeneity (i.e. infection risk heterogeneity) can affect estimates of vaccine efficacy for leaky vaccines (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."), 
-    p("A potential outcome of exposure heterogeneity (i.e. risk structure in a population) is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). This distinction is important: the per-exposure vaccine efficacy is not necessarily equal to the clinical efficacy or the population effectiveness of the same vaccine."),
-    p("From Gomes et al., 2016:  \"This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission.\"  "),
+    p("It is hypothesized that exposure heterogeneity 
+    (i.e. variation among individuals in the risk of infection, most commonly discussed as variation in the number of HIV exposures) can affect estimates of vaccine efficacy for leaky vaccines (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."), 
+    p("A potential outcome of exposure heterogeneity is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). This distinction is important: the per-exposure vaccine efficacy is not necessarily equal to the clinical efficacy or the population effectiveness of the same vaccine."),
+    #p("From Gomes et al., 2016:  \"This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission.\"  "),
     p("Here we use epidemic models to simulate this process, within and across populations, in the context of HIV prevention trials or longitudinal studies. Our goals are to:"),
     HTML("<ol type='1'>"),
     HTML("<li>Raise awareness of the distinction between per-exposure vaccine efficacy, clinical vaccine efficacy, and population vaccine effectiveness.</li>"),
@@ -40,8 +41,8 @@ getModelDescriptionContent <- function() {
     h3("Model structure"),
     p("We are modeling a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I). 
     We start the epidemic model with all trial individuals in the S group; over time S individuals move into the I group as they become infected."), 
-    p("We are not modeling infections from the I to S compartments but rather only infections from the outside (non-trial) population."),  
-    p("This model structure also removes the possibility of indirect effects from vaccination."),
+    p("We are not modeling infections from the I to S compartments but rather only infections from the outside (non-trial) population.  
+    This model structure also removes the possibility of indirect effects from vaccination."),
     h3("Parameters"),
     HTML(paste("<div class='code'>", 
                "<div class='flex'><div class='definition'>beta</div><div>transmission rate (per contact)</div></div>",
@@ -94,7 +95,8 @@ getInitialExamplePlotsContent <- function() {
               plotOutput("PlaceboVaccineRiskPlot") %>% withSpinner(color="#0dc5c1"),
               p("Figure 3. Incidence in the placebo and vaccine arms of a trial, for populations with homogeneous risk and heterogeneous risk."),
               plotOutput("VEPlot") %>% withSpinner(color="#0dc5c1"),
-              p("Figure 4. Clinical vaccine efficacy over time in two vaccine trial population trials, one with homogeneous risk and the other with heterogeneous risk."),
+              p("Figure 4. Clinical vaccine efficacy over time in two vaccine trial population trials, one with homogeneous risk and the other with heterogeneous risk. 
+              Remember that the per-exposure vaccine is the value of the epsilon slider on the left."),
               class = "plotPanel"
              ),
            HTML("</div>"),
@@ -130,12 +132,14 @@ getParameterSweepContent <- function() {
              ),
              
              mainPanel(
-               p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla aliquam ex, vitae scelerisque felis semper quis. Aenean nec pharetra ligula. Mauris vulputate purus ante, id faucibus leo facilisis sit amet. Fusce vestibulum justo eu enim commodo consectetur. Fusce nisi urna, ultrices at purus at, imperdiet efficitur ligula. Curabitur quis sapien ligula. Ut non orci ullamcorper, pulvinar nibh vel, molestie velit. Morbi vulputate hendrerit mi, a mollis risus blandit eget. Cras lacinia eget massa condimentum finibus. Morbi porta lorem augue, in sagittis orci vehicula vel. Sed ipsum nisi, scelerisque quis luctus at, efficitur sed erat. Nam aliquet hendrerit laoreet. Nulla rutrum, nisi pulvinar placerat eleifend, lacus metus ornare dolor, at iaculis augue mi sit amet lorem. Aliquam sit amet turpis nec quam aliquet pretium. Maecenas leo lectus, efficitur in magna ut, gravida iaculis felis."),
                plotlyOutput("plotOld1") %>% withSpinner(color="#0dc5c1"),
-               p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla aliquam ex, vitae scelerisque felis semper quis. Aenean nec pharetra ligula. Mauris vulputate purus ante, id faucibus leo facilisis sit amet. Fusce vestibulum justo eu enim commodo consectetur. Fusce nisi urna, ultrices at purus at, imperdiet efficitur ligula. Curabitur quis sapien ligula. Ut non orci ullamcorper, pulvinar nibh vel, molestie velit. Morbi vulputate hendrerit mi, a mollis risus blandit eget. Cras lacinia eget massa condimentum finibus. Morbi porta lorem augue, in sagittis orci vehicula vel. Sed ipsum nisi, scelerisque quis luctus at, efficitur sed erat. Nam aliquet hendrerit laoreet. Nulla rutrum, nisi pulvinar placerat eleifend, lacus metus ornare dolor, at iaculis augue mi sit amet lorem. Aliquam sit amet turpis nec quam aliquet pretium. Maecenas leo lectus, efficitur in magna ut, gravida iaculis felis."),
+               p("Figure 1. The effect of varying the size of the high risk subgroup in a vaccine trial population. 
+               On the left is clinical vaccine efficacy measured using cumulative incidence.
+               On the right is clinical vaccine efficacy measured using instantaneous incidence, or hazard."),
                plotlyOutput("plotOld2") %>% withSpinner(color="#0dc5c1"),
-               p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla aliquam ex, vitae scelerisque felis semper quis. Aenean nec pharetra ligula. Mauris vulputate purus ante, id faucibus leo facilisis sit amet. Fusce vestibulum justo eu enim commodo consectetur. Fusce nisi urna, ultrices at purus at, imperdiet efficitur ligula. Curabitur quis sapien ligula. Ut non orci ullamcorper, pulvinar nibh vel, molestie velit. Morbi vulputate hendrerit mi, a mollis risus blandit eget. Cras lacinia eget massa condimentum finibus. Morbi porta lorem augue, in sagittis orci vehicula vel. Sed ipsum nisi, scelerisque quis luctus at, efficitur sed erat. Nam aliquet hendrerit laoreet. Nulla rutrum, nisi pulvinar placerat eleifend, lacus metus ornare dolor, at iaculis augue mi sit amet lorem. Aliquam sit amet turpis nec quam aliquet pretium. Maecenas leo lectus, efficitur in magna ut, gravida iaculis felis."),
+               p("Figure 2."), 
                plotlyOutput("plotOld3") %>% withSpinner(color="#0dc5c1"),
+               p("Figure 3."), 
                class = "plotPanel"
              ),
            HTML("</div>"),
