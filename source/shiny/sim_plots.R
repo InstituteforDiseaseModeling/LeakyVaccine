@@ -2,13 +2,12 @@
 # for creating cumulative infections plot
 #------------------------------------------------------------------------------
 createCumulativeInfectionsPlot <- function(output, reac) {
-  output$CumulativeInfections <- renderPlot({
-    
+  output$CumulativeInfectionsPlot <- renderPlot({
     mod <- runSim(reac)
     
     plot(mod, y = c("Ip", "total.Iph.Ipm.Ipl"), 
          alpha = 0.8, 
-         main = "Cumulative infections",
+         main = "Cumulative infections in the placebo arm",
          legend = FALSE,
          ylab = "infected",
          xlab = "days",
@@ -22,7 +21,6 @@ createCumulativeInfectionsPlot <- function(output, reac) {
 #------------------------------------------------------------------------------
 createPlaceboRiskPlot <- function(output, reac) {
   output$PlaceboRiskPlot <- renderPlot({
-    
     mod <- runSim(reac)
     
     plot(mod, y=c("rate.Placebo", "rate.Placebo.het"),
@@ -48,7 +46,7 @@ createPlaceboVaccineRiskPlot <- function(output, reac) {
     plot(mod, y=c("rate.Placebo", "rate.Vaccine", "rate.Placebo.het", "rate.Vaccine.het"),
          alpha = 0.8,
          ylim = c(0, 6.0),
-         main = "Hazard",
+         main = "HIV incidence",
          xlab = "days",
          ylab = "infections per 100 person yrs",
          legend = FALSE,
@@ -67,7 +65,7 @@ createVEPlot <- function(output, reac) {
     mod <- runSim(reac)
     plot(mod, y=c("VE1.inst", "VE2.inst"),
        alpha = 0.8,
-       main = "Vaccine efficacy",
+       main = "Clinical vaccine efficacy",
        legend = FALSE, 
        xlab = "days",
        ylab = "Vaccine efficacy",

@@ -19,10 +19,10 @@ source("shiny/Paul-visualization.R")
 
 server <- function(input, output, session) {
   
-  updateTabsetPanel(session, "page-nav", "Introduction")
-  #--------------
+  updateTabsetPanel(session, "page-nav", "About this tool")
+  #-------------------------------------------------------------------------
   # for the Parameter Sweeps tab
-  #--------------
+  #-------------------------------------------------------------------------
   reacOld <- reactiveValues()
   
   observe({reacOld$beta = input$betaOld})
@@ -38,9 +38,9 @@ server <- function(input, output, session) {
   output$plotOld2  <-  renderPlotly(runSimByInc(reacOld))
   output$plotOld3  <-  renderPlotly(runSimByEpsilon(reacOld))
   
-  #------------------
+  #-------------------------------------------------------------------------
   # for the Initial Example Plots tab
-  #------------------
+  #-------------------------------------------------------------------------
   
   reac <- reactiveValues()
 
@@ -54,10 +54,9 @@ server <- function(input, output, session) {
   observe({reac$riskTest = input$riskTest}) 
   observe({reac$numExecution = input$numExecution}) 
   
-  createCInfectionPlot(output, reac)
+  createCumulativeInfectionsPlot(output, reac)
   createPlaceboRiskPlot(output,reac)
-  createCIncidencePlot(output, reac)
-  createPlaceboVaccinePlot(output,reac)
+  #createPlaceboVaccinePlot(output,reac)
   createPlaceboVaccineRiskPlot(output,reac)
   createVEPlot(output,reac)
   
@@ -81,9 +80,9 @@ ui <- navbarPage(
   #tabs
   getAboutContent(),
   getModelDescriptionContent(),
-  #getCalibrationContent(),
   getInitialExamplePlotsContent(),
   getParameterSweepContent(),
+  getCalibrationContent(),
   getTestTab()
   
 )
