@@ -16,6 +16,7 @@ source("model/sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
+source("model/modelFitting.R")
 
 server <- function(input, output, session) {
   
