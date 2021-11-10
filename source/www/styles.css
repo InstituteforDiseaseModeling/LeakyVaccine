@@ -175,5 +175,46 @@
     background-color: #24323c;
   }
   
+  .infoIconButton {
+    color: white;
+    z-index:1001;
+    position:fixed;
+    display:flex;
+    flex-direction: row-reverse;
+    font-size:20px;
+    width:100%;
+    top:8px;
+    right:8px;
+    background-color: transparent!important;
+    background-image: none!important;
+    border:none!important;
+  }
+  
+  .infoIcon {
+    background-color: transparent!important;
+    color:white;
+  }
+  
+  .license {
+    border: solid 1px lightgrey;
+    
+    -moz-border-radius-bottomright: 5px;
+    
+    border-top: none;
+    padding:20px;
+    min-height:calc(100vh - 300px);
+  }
+  
+  .modal-dialog {
+    height:70%;
+  }
+  
+  .modal-content {
+    //height:70%
+  }
+  
+  .licensePanel, .licenseTabSet {
+    height:100%;
+  }
   
 

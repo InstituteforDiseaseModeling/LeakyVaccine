@@ -16,13 +16,15 @@ source("model/sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
+source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
 
 server <- function(input, output, session) {
   
   updateTabsetPanel(session, "page-nav", "About this tool")
+  
   #-------------------------------------------------------------------------
-  # for the Parameter Sweeps tab
+  # below are the reactiveValues for the Parameter Sweeps tab
   #-------------------------------------------------------------------------
   reacOld <- reactiveValues()
   
@@ -30,17 +32,16 @@ server <- function(input, output, session) {
   observe({reacOld$contactRate = input$contactRateOld})
   observe({reacOld$prev = input$prevOld})
   observe({reacOld$epsilon = input$epsilonOld})
-  #observe({reacOld$size = input$sizeOld})
   observe({reacOld$inc = input$incOld})
-  observe({reacOld$nsteps = input$nstepsOld})
   observe({reacOld$sampleSize = input$sampleSizeOld})
-  
+  observe({reacOld$nsteps = input$nstepsOld})
+
   output$plotOld1  <-  renderPlotly(runSimByPropHigh(reacOld))
   output$plotOld2  <-  renderPlotly(runSimByInc(reacOld))
   output$plotOld3  <-  renderPlotly(runSimByEpsilon(reacOld))
   
   #-------------------------------------------------------------------------
-  # for the Initial Example Plots tab
+  # below are the reactiveValues for the Initial Example Plots tab
   #-------------------------------------------------------------------------
   
   reac <- reactiveValues()
@@ -50,10 +51,19 @@ server <- function(input, output, session) {
   observe({reac$prev = input$prev})
   observe({reac$epsilon = input$epsilon})
   observe({reac$risk = input$risk}) 
+  
+  #--------------------------------------------------
+  # below are the reactiveValues for the Model Fitting tab
+  #--------------------------------------------------
+  
   observe({reac$lambdaTest = input$lambdaTest})  
   observe({reac$epsilonTest = input$epsilonTest}) 
   observe({reac$riskTest = input$riskTest}) 
   observe({reac$numExecution = input$numExecution}) 
+  
+  #----------------------
+  # plots for the Initial Examples tab
+  #----------------------
   
   createCumulativeInfectionsPlot(output, reac)
   createPlaceboRiskPlot(output,reac)
@@ -62,6 +72,11 @@ server <- function(input, output, session) {
   createVEPlot(output,reac)
   
   createVisualization(output,reac)
+  
+  # for the infobutton content
+  observeEvent(input$infobutton, {
+    createLicenseDialog()
+  })
   
 }
 
@@ -72,7 +87,9 @@ ui <- navbarPage(
   
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
-    tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css"),
+    tags$head(tags$script(src = "message-handler.js")),
+    actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton")
   ),
   title ="Leaky vaccines and exposure heterogeneity",
   id = "page-nav",
