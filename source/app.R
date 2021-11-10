@@ -16,6 +16,7 @@ source("model/sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
+source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
 
 server <- function(input, output, session) {
@@ -63,6 +64,11 @@ server <- function(input, output, session) {
   
   createVisualization(output,reac)
   
+  # for the infobutton content
+  observeEvent(input$infobutton, {
+    createLicenseDialog()
+  })
+  
 }
 
 #------------------------------------------------------------------------------
@@ -72,7 +78,9 @@ ui <- navbarPage(
   
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
-    tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css"),
+    tags$head(tags$script(src = "message-handler.js")),
+    actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton")
   ),
   title ="Leaky vaccines and exposure heterogeneity",
   id = "page-nav",
