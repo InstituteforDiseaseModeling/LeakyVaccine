@@ -88,7 +88,6 @@ ui <- navbarPage(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
     tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css"),
-    tags$head(tags$script(src = "message-handler.js")),
     actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton")
   ),
   title ="Leaky vaccines and exposure heterogeneity",
