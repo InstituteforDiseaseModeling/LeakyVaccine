@@ -114,20 +114,18 @@ getParameterSweepContent <- function() {
   tabPanel("Parameter sweeps", 
            HTML("<div class='mainPanel'>"),
              sidebarPanel(  
-               sliderInput('betaOld', 'beta (per-contact transmission probability):', min=0, max=0.01,
-                           value=0.004, step=0.001, round=-4),
-               sliderInput('contactRateOld', 'c (sexual contacts per day):', min=0, max=1,
-                           value=90/365, step=0.01, round=FALSE),
-               sliderInput('prevOld', 'prev (population prevalence of viremic individuals):', min=0, max=1,
+               sliderInput('sweepRiskMultiplier', 'risk multiplier:', min=2, max=100,
+                           value=4, step=1, round=FALSE),
+               sliderInput('sweepEpsilon', 'Epsilon:', min=0, max=1,
+                           value=0.3, step=0.01, round=FALSE),
+               sliderInput('sweepPropHigh', 'Proportion high risk:', min=0.01, max=0.5,
                            value=0.1, step=0.1, round=FALSE),
-               sliderInput('epsilonOld', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
-                           value=0.3, step=0.1, round=FALSE),
-               sliderInput('incOld', 'inc (cumulative incidence, per 100 person years):', min=0, max=1,
-                           value=0.04, step=0.01, round=-3),
-               sliderInput('sampleSizeOld', 'sample size (population size):', min=0, max=10000,
+               sliderInput('sweepN', 'sample size (population size):', min=0, max=10000,
                            value=5000, step=500, round=FALSE),
-               sliderInput('nstepsOld', 'nsteps (number of times steps):', min=0, max=3650,
-                           value=365*3, step=100, round=FALSE),
+               sliderInput('sweepInc', 'Annual incidence (%)', min=1, max=100,
+                           value=4, step=1, round=FALSE),
+               sliderInput('sweepNsteps', 'nsteps (1 to 5 years):', min=1, max=5,
+                           value=3, step=100, round=FALSE),
                class = "slider"
              ),
              
@@ -179,7 +177,7 @@ getCalibrationContent <- function() {
 # for creating Model Fitting tab content (Fitting the model to specific trial data)
 #------------------------------------------------------------------------------
 
-getTestTab <- function() {
+getModelFittingTab <- function() {
   tabPanel("Model fitting", 
            
            HTML("<div class='mainPanel'>"),
@@ -190,7 +188,7 @@ getTestTab <- function() {
                          value=0.40, step=0.05, round=FALSE),
              sliderInput('riskTest', 'risk:', min=0, max=30,
                          value=10.0, step=1, round=FALSE),
-             sliderInput('numExecution', '# of execution:', min=0, max=1000,
+             sliderInput('numExecution', '# of execution:', min=50, max=200,
                          value=100, step=50, round=FALSE),
              class = "slider"
            ),

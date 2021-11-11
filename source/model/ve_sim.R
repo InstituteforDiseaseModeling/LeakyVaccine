@@ -20,7 +20,6 @@ source("model/ve_sim_fns.R")
 # Run simulation with different proportions in high risk group
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 runSimByPropHigh <- function(param) {
-  
   # beta <- param$beta        # transmission rate (per contact)
   # c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
   # prev <- param$prev        # needs some more consideration
