@@ -26,19 +26,18 @@ server <- function(input, output, session) {
   #-------------------------------------------------------------------------
   # below are the reactiveValues for the Parameter Sweeps tab
   #-------------------------------------------------------------------------
-  reacOld <- reactiveValues()
+  reacSweep <- reactiveValues()
   
-  observe({reacOld$beta = input$betaOld})
-  observe({reacOld$contactRate = input$contactRateOld})
-  observe({reacOld$prev = input$prevOld})
-  observe({reacOld$epsilon = input$epsilonOld})
-  observe({reacOld$inc = input$incOld})
-  observe({reacOld$sampleSize = input$sampleSizeOld})
-  observe({reacOld$nsteps = input$nstepsOld})
-
-  output$plotOld1  <-  renderPlotly(runSimByPropHigh(reacOld))
-  output$plotOld2  <-  renderPlotly(runSimByInc(reacOld))
-  output$plotOld3  <-  renderPlotly(runSimByEpsilon(reacOld))
+  observe({reacSweep$riskMultiplier = input$sweepRiskMultiplier})
+  observe({reacSweep$epsilon =input$sweepEpsilon})
+  observe({reacSweep$propHigh = input$sweepPropHigh})
+  observe({reacSweep$sampleSize = input$sweepN})
+  observe({reacSweep$inc = input$sweepInc/100})
+  observe({reacSweep$nsteps = input$sweepNsteps*365})
+  
+  output$plotOld1  <-  renderPlotly(runSimByPropHigh(reacSweep))
+  output$plotOld2  <-  renderPlotly(runSimByInc(reacSweep))
+  output$plotOld3  <-  renderPlotly(runSimByEpsilon(reacSweep))
   
   #-------------------------------------------------------------------------
   # below are the reactiveValues for the Initial Example Plots tab
@@ -99,8 +98,8 @@ ui <- navbarPage(
   getModelDescriptionContent(),
   getInitialExamplePlotsContent(),
   getParameterSweepContent(),
-  getCalibrationContent(),
-  getTestTab()
+  #getCalibrationContent(),
+  getModelFittingTab()
   
 )
 
