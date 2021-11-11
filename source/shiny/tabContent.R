@@ -52,7 +52,7 @@ getModelDescriptionContent <- function() {
                "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
                "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
                "</div><br/>")),
-    p("The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
+    HTML("The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
     (serodiscordant sexual exposure per time) <code>c</code>, and the transmission rate (per exposure) <code>p</code>. The per exposure effect of vaccination
     is <code>epsilon</code>; <code>epsilon</code> is not time-varying (the per-exposure vaccine effect does not decay over time) and assumes a homogeneous effect
     (does not vary by viral genotype or individual traits)."),
