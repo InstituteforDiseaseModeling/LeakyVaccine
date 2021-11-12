@@ -12,6 +12,7 @@ library(shinythemes)
 library(shinycssloaders)
 
 source("model/ve_sim.R")
+source("model/ve_sim_fns.R")
 source("model/sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
