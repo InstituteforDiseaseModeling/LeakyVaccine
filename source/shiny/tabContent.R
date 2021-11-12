@@ -36,7 +36,7 @@ getAboutContent <- function() {
 #------------------------------------------------------------------------------
 getModelDescriptionContent <- function() {
   return(tabPanel("Model description",
-
+    class="modelDescription",
     HTML("<div class='mainPanel main'>"),
     h3("Model structure"),
     p("We model a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I).
@@ -52,15 +52,15 @@ getModelDescriptionContent <- function() {
                "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
                "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
                "</div><br/>")),
-    HTML("The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
+    HTML("<p>The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
     (serodiscordant sexual exposure per time) <code>c</code>, and the transmission rate (per exposure) <code>beta</code>. The per exposure effect of vaccination
     is <code>epsilon</code>; <code>epsilon</code> is not time-varying (the per-exposure vaccine effect does not decay over time) and assumes a homogeneous effect
-    (does not vary by viral genotype or individual traits)."),
-    p("We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
-    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence."),
-    p("The <code>risk</code> parameter (the risk multiplier) is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
+    (does not vary by viral genotype or individual traits).</p>"),
+    HTML("<p>We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
+    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence.</p>"),
+    HTML("<p>The <code>risk</code> parameter (the risk multiplier) is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
     higher exposure rate (number of contacts), or higher prevalence of HIV viremia in partners. Individual risk of infection can vary for
-    these separately or in combination."),
+    these separately or in combination.</p>"),
     HTML("</div>"),
     titlePanel(htmlTemplate("template.html"))
   ))
