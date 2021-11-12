@@ -12,6 +12,7 @@ library(shinythemes)
 library(shinycssloaders)
 
 source("model/ve_sim.R")
+source("model/ve_sim_fns.R")
 source("model/sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
@@ -21,7 +22,7 @@ source("model/modelFitting.R")
 
 server <- function(input, output, session) {
   
-  updateTabsetPanel(session, "page-nav", "About this tool")
+  updateTabsetPanel(session, "page-nav", "About")
   
   #-------------------------------------------------------------------------
   # below are the reactiveValues for the Parameter Sweeps tab
@@ -97,9 +98,9 @@ ui <- navbarPage(
   getAboutContent(),
   getModelDescriptionContent(),
   getInitialExamplePlotsContent(),
-  getParameterSweepContent(),
+  getParameterSweepContent()
   #getCalibrationContent(),
-  getModelFittingTab()
+  #getModelFittingTab()
   
 )
 

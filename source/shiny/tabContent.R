@@ -1,15 +1,15 @@
 
 #------------------------------------------------------------------------------
-# for creating Intro tab content
+# for creating Welcome tab content
 #------------------------------------------------------------------------------
-getAboutContent <- function() {
+getWelcomeContent <- function() {
   return(tabPanel("About",
                    
     HTML("<div class='mainPanel main'>"),
     p("It is hypothesized that exposure heterogeneity
     (i.e. variation among individuals in the risk of infection, most commonly discussed as variation in the number of HIV exposures) can affect estimates of vaccine efficacy for leaky vaccines, which improve survival or reduce symptoms without preventing viral replication and transmission (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."),
     p("A potential outcome of exposure heterogeneity is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). This distinction is important: the per-exposure vaccine efficacy is not necessarily equal to the clinical efficacy or the population effectiveness of the same vaccine."),
-    #p("From Gomes et al., 2016:  \"This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission.\"  "),
+    #p("From M. Gomes et al., 2016:  \"This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission.\"  "),
     p("Here we use epidemic models to simulate this process, within and across populations, in the context of HIV prevention trials or longitudinal studies. Our goals are to:"),
     HTML("<ol type='1'>"),
     HTML("<li>Raise awareness of the distinction between per-exposure vaccine efficacy, clinical vaccine efficacy, and population vaccine effectiveness.</li>"),
@@ -36,7 +36,7 @@ getAboutContent <- function() {
 #------------------------------------------------------------------------------
 getModelDescriptionContent <- function() {
   return(tabPanel("Model description",
-
+    class="modelDescription",
     HTML("<div class='mainPanel main'>"),
     h3("Model structure"),
     p("We model a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I).
@@ -52,15 +52,15 @@ getModelDescriptionContent <- function() {
                "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
                "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
                "</div><br/>")),
-    HTML("The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
+    HTML("<p>The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
     (serodiscordant sexual exposure per time) <code>c</code>, and the transmission rate (per exposure) <code>beta</code>. The per exposure effect of vaccination
     is <code>epsilon</code>; <code>epsilon</code> is not time-varying (the per-exposure vaccine effect does not decay over time) and assumes a homogeneous effect
-    (does not vary by viral genotype or individual traits)."),
-    p("We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
-    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence."),
-    p("The <code>risk</code> parameter (the risk multiplier) is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
+    (does not vary by viral genotype or individual traits).</p>"),
+    HTML("<p>We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
+    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence.</p>"),
+    HTML("<p>The <code>risk</code> parameter (the risk multiplier) is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
     higher exposure rate (number of contacts), or higher prevalence of HIV viremia in partners. Individual risk of infection can vary for
-    these separately or in combination."),
+    these separately or in combination.</p>"),
     HTML("</div>"),
     titlePanel(htmlTemplate("template.html"))
   ))
@@ -79,11 +79,11 @@ getInitialExamplePlotsContent <- function() {
                            value=0.005, step=0.001, round=-4),
                sliderInput('contactRate', 'c (sexual contacts per day):', min=0.001, max=1,
                            value=90/365, step=0.01, round=FALSE),
-               sliderInput('prev', 'prev (population prevalence of viremic individuals):', min=0.001, max=1,
-                           value=0.10, step=0.1, round=FALSE),
+               sliderInput('prev', 'prev (population prevalence of viremic individuals):', min=0.001, max=0.3,
+                           value=0.01, step=0.1, round=FALSE),
                sliderInput('epsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
                            value=0.5, step=0.1, round=FALSE),
-               sliderInput('risk', 'risk (risk multiplier; relative force of infection for high-risk group):', min=0, max=25,
+               sliderInput('risk', 'risk (risk multiplier; relative force of infection for high risk group):', min=0, max=100,
                            value=15, step=1, round=FALSE) 
              ),
              mainPanel(
@@ -123,7 +123,7 @@ getParameterSweepContent <- function() {
                            value=5000, step=500, round=FALSE),
                sliderInput('sweepInc', 'annual incidence (%)', min=0.5, max=8,
                            value=4, step=1, round=FALSE),
-               sliderInput('sweepNsteps', 'length of model run (1 to 5 years):', min=1, max=5,
+               sliderInput('sweepNsteps', 'nsteps (1 to 5 years):', min=1, max=5,
                            value=3, step=1, round=FALSE),
                class = "slider"
              ),

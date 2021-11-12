@@ -217,4 +217,22 @@
     height:100%;
   }
   
+  .licenseTable  {
+    //border: 1px solid lightgrey;
+    width:100%;
+  }
+  
+  .licenseTable tr:nth-child(even) {
+    background-color: darkgrey;
+    color:white;
+  }
+  
+  .licenseTable td {
+    padding:5px;
+  }
+  
+  .modelDescription code {
+    color:cornflowerblue;
+    background-color: #efefef;
+  }
 
