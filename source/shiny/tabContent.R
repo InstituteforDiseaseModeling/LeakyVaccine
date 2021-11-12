@@ -53,13 +53,12 @@ getModelDescriptionContent <- function() {
                "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
                "</div><br/>")),
     HTML("The infection rate per time step is a combination of population prevalence <code>prev</code> (of viremic individuals), the exposure rate
-    (serodiscordant sexual exposure per time) <code>c</code>, and the transmission rate (per exposure) <code>p</code>. The per exposure effect of vaccination
+    (serodiscordant sexual exposure per time) <code>c</code>, and the transmission rate (per exposure) <code>beta</code>. The per exposure effect of vaccination
     is <code>epsilon</code>; <code>epsilon</code> is not time-varying (the per-exposure vaccine effect does not decay over time) and assumes a homogeneous effect
     (does not vary by viral genotype or individual traits)."),
     p("We include three subgroups in the heterogeneous exposure population: high, medium, and low exposure. 
-    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence. 
-    But here we set the size of these groups at 10% high risk, 80% medium risk, and 10% low risk."),
-    p("The risk multiplier is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
+    In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence."),
+    p("The <code>risk</code> parameter (the risk multiplier) is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
     higher exposure rate (number of contacts), or higher prevalence of HIV viremia in partners. Individual risk of infection can vary for
     these separately or in combination."),
     HTML("</div>"),
@@ -115,8 +114,8 @@ getParameterSweepContent <- function() {
            HTML("<div class='mainPanel'>"),
              sidebarPanel(  
                sliderInput('sweepRiskMultiplier', 'risk multiplier for high risk subgroup:', min=2, max=100,
-                           value=10, step=1, round=FALSE),
-               sliderInput('sweepEpsilon', 'epsilon, the per-exposure vaccine efficacy:', min=0, max=1,
+                           value=15, step=1, round=FALSE),
+               sliderInput('sweepEpsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
                            value=0.3, step=0.01, round=FALSE),
                sliderInput('sweepPropHigh', 'proportion high risk:', min=0.01, max=0.5,
                            value=0.1, step=0.1, round=FALSE),
