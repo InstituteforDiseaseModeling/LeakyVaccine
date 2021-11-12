@@ -23,7 +23,7 @@ getWelcomeContent <- function() {
     HTML("<li>Model description, showing the structure of the model and the parameters included.</li>"),
     HTML("<li>Initial plots, showing how the model works and what simulated epidemic and trial outputs we focus on.</li>"),
     HTML("<li>Parameter sweeps, which allows you to compare the impact of multiple parameter values in the same plots.</li>"),
-    HTML("<li>Model fitting, in which we use the model to examine specific trial results.</li>"),
+    #HTML("<li>Model fitting, in which we use the model to examine specific trial results.</li>"),
     HTML("</ul>"),
     HTML("</div>"),
     titlePanel(htmlTemplate("template.html"))
