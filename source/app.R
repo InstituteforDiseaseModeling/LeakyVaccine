@@ -95,7 +95,7 @@ ui <- navbarPage(
   theme = shinytheme("cerulean"),
   
   #tabs
-  getAboutContent(),
+  getWelcomeContent(),
   getModelDescriptionContent(),
   getInitialExamplePlotsContent(),
   getParameterSweepContent()
