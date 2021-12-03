@@ -14,7 +14,7 @@ library(ggplot2)
 library(viridis)
 
 ## Helper functions
-source("model/ve_sim_fns.R")
+#source("model/ve_sim_fns.R")
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Run simulation with different proportions in high risk group
