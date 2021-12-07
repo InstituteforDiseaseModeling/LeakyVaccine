@@ -6,6 +6,7 @@ getWelcomeContent <- function() {
   return(tabPanel("About",
                    
     HTML("<div class='mainPanel main'>"),
+    p("This is an online tool to explore the effects of exposure heterogeneity on HIV vaccine efficacy."),
     p("It is hypothesized that exposure heterogeneity
     (i.e. variation among individuals in the risk of infection, most commonly discussed as variation in the number of HIV exposures) can affect estimates of vaccine efficacy for leaky vaccines, which improve survival or reduce symptoms without preventing viral replication and transmission (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."),
     p("A potential outcome of exposure heterogeneity is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). This distinction is important: the per-exposure vaccine efficacy is not necessarily equal to the clinical efficacy or the population effectiveness of the same vaccine."),
@@ -76,15 +77,15 @@ getInitialExamplePlotsContent <- function() {
            HTML("<div class='mainPanel'>"),
              sidebarPanel(  
                sliderInput('beta', 'beta (per-contact transmission probability):', min=0.001, max=0.01,
-                           value=0.005, step=0.001, round=-4),
+                           value=0.004, step=0.001, round=-4),
                sliderInput('contactRate', 'c (sexual contacts per day):', min=0.001, max=1,
                            value=90/365, step=0.01, round=FALSE),
                sliderInput('prev', 'prev (population prevalence of viremic individuals):', min=0.001, max=0.3,
-                           value=0.01, step=0.1, round=FALSE),
+                           value=0.10, step=0.1, round=FALSE),
                sliderInput('epsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
                            value=0.5, step=0.1, round=FALSE),
                sliderInput('risk', 'risk (risk multiplier; relative force of infection for high risk group):', min=0, max=100,
-                           value=15, step=1, round=FALSE) 
+                           value=20, step=1, round=FALSE) 
              ),
              mainPanel(
               plotOutput("CumulativeInfectionsPlot") %>% withSpinner(color="#0dc5c1"),
@@ -113,17 +114,17 @@ getParameterSweepContent <- function() {
   tabPanel("Parameter sweeps", 
            HTML("<div class='mainPanel'>"),
              sidebarPanel(  
-               sliderInput('sweepRiskMultiplier', 'risk multiplier for high risk subgroup:', min=2, max=100,
+               sliderInput('sweepRiskMultiplier', 'risk (risk multiplier; relative force of infection for high risk group):', min=1, max=50,
                            value=15, step=1, round=FALSE),
                sliderInput('sweepEpsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
-                           value=0.3, step=0.01, round=FALSE),
+                           value=0.5, step=0.05, round=FALSE),
                sliderInput('sweepPropHigh', 'proportion high risk:', min=0.01, max=0.5,
                            value=0.1, step=0.1, round=FALSE),
                sliderInput('sweepN', 'population size:', min=0, max=10000,
                            value=5000, step=500, round=FALSE),
                sliderInput('sweepInc', 'annual incidence (%)', min=0.5, max=8,
-                           value=4, step=1, round=FALSE),
-               sliderInput('sweepNsteps', 'nsteps (1 to 5 years):', min=1, max=5,
+                           value=4, step=0.5, round=FALSE),
+               sliderInput('sweepNsteps', 'time (1 to 5 years):', min=1, max=5,
                            value=3, step=1, round=FALSE),
                class = "slider"
              ),
