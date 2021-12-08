@@ -78,7 +78,7 @@ runSimByPropHigh <- function(param) {
     geom_abline(intercept = epsilon, slope = 0, linetype = "dashed") +
     scale_color_viridis(name = "Proportion high risk") +
     labs(x = "Time (days)", y = "Estimated vaccine efficacy") +
-    scale_y_continuous(limits = c(0, 0.5), breaks = seq(0, 1, by = 0.1)) +
+    scale_y_continuous(limits = c(0, 01.0), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
     ggtitle(paste("Overall incidence = ", inc, "VE =", epsilon, "Risk Multiplier =", risk)) +
     theme_classic()
@@ -231,34 +231,3 @@ runSimByEpsilon <- function(param) {
   
   dev.off()
 }
-
-# par(mar = c(3,3,2,1), mgp = c(2,1,0))
-# plot(mod, y = c("Iv", "Ip", "total.Ivh.Ivl", "total.Iph.Ipl"), 
-#      alpha = 0.8, 
-#      main = "Cumulative infections",
-#      legend = "full")
-# plot(mod, y = c("SIv.flow", "SIp.flow", "SIvh.flow", "SIvl.flow", "SIph.flow", "SIpl.flow"), 
-#      alpha = 0.8, 
-#      main = "Daily infections, w/ all risk groups shown",
-#      legend = "full")
-# plot(mod, y = c("SIv.flow", "SIp.flow", "total.SIvh.SIvl.flow", "total.SIph.SIpl.flow"),
-#      alpha = 0.8, 
-#      main = "Daily infections, total mixed risk group",
-#      legend = "full")
-# plot(mod, y=c("rate.Vaccine", "rate.Placebo", "rate.Vaccine.het", "rate.Placebo.het"),
-#      alpha = 0.8,
-#      #ylim = c(0, 0.1),
-#      main = "Instantaneous incidence rate",
-#      legend = "full")
-# plot(mod, y=c("cumul.rate.Vaccine", "cumul.rate.Placebo", "cumul.rate.Vaccine.het", "cumul.rate.Placebo.het"),
-#      alpha = 0.8,
-#      #ylim = c(0, 0.1),
-#      main = "Cumulative incidence",
-#      legend = "full")
-# plot(mod, y=c("VE1.inst", "VE2.inst", "VE1.cumul", "VE2.cumul"),
-#      alpha = 0.8,
-#      main = "Vaccine efficacy",
-#      legend = FALSE, 
-#      col = 1:4)
-# legend("topright", legend = c("Instantanteous VE, homogeneous risk", "Inst VE, heterogeneous risk", "Cumulative VE, homogeneous risk", "Cumul VE, heterogeneous risk"),
-#        col = 1:4, lwd = 2, cex = 0.9, bty = "n")

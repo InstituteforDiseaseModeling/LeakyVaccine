@@ -1,14 +1,16 @@
 
 #------------------------------------------------------------------------------
-# for creating Welcome tab content
+# for creating About tab content
 #------------------------------------------------------------------------------
-getWelcomeContent <- function() {
+getAboutContent <- function() {
   return(tabPanel("About",
                    
     HTML("<div class='mainPanel main'>"),
     p("This is an online tool to explore the effects of exposure heterogeneity on HIV vaccine efficacy."),
-    p("It is hypothesized that exposure heterogeneity
-    (i.e. variation among individuals in the risk of infection, most commonly discussed as variation in the number of HIV exposures) can affect estimates of vaccine efficacy for leaky vaccines, which improve survival or reduce symptoms without preventing viral replication and transmission (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."),
+    p("It is hypothesized that exposure heterogeneity can affect estimates of vaccine efficacy for leaky vaccines, (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."),
+    p("Note that exposure heterogeneity, i.e. variation among individuals in the risk of infection, is most commonly discussed as variation in the number of HIV exposures. 
+      it can also include variation in the individual per-contact risk of acquisition, perhaps due to co-infections, viral load in the source individual
+      or host genetics."),
     p("A potential outcome of exposure heterogeneity is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). This distinction is important: the per-exposure vaccine efficacy is not necessarily equal to the clinical efficacy or the population effectiveness of the same vaccine."),
     #p("From M. Gomes et al., 2016:  \"This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission.\"  "),
     p("Here we use epidemic models to simulate this process, within and across populations, in the context of HIV prevention trials or longitudinal studies. Our goals are to:"),
@@ -41,15 +43,15 @@ getModelDescriptionContent <- function() {
     HTML("<div class='mainPanel main'>"),
     h3("Model structure"),
     p("We model a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I).
-    We start the epidemic model with all trial individuals in the S group; over time S individuals move into the I group as they become infected."), 
-    p("We are not modeling infections from the I to S compartments, but rather only infections from the outside (non-trial) population.
-    This model structure also removes the possibility of indirect effects from vaccination."),
+    We start the model with all trial individuals in the S group; over time S individuals move into the I group as they become infected."), 
+    p("Note that this is specfically a vaccine trial model and not a more commonly used epidemic model; we are not modeling infections from the I to S compartments, but rather only infections from a theoretical, un-modeled, outside (non-trial) population.
+    We do this with one parameter, <code>lambda</code>, which is the rate that individuals in S get infected (move to I). This model structure also removes the possibility of indirect effects from vaccination."),
     h3("Parameters"),
     HTML(paste("<div class='code'>", 
                "<div class='flex'><div class='definition'>beta</div><div>transmission rate (per contact)</div></div>",
                "<div class='flex'><div class='definition'>c</div><div>exposure rate (serodiscordant sexual contacts per time)</div></div>",
                "<div class='flex'><div class='definition'>prev</div><div>prevalence  (prevalence of viremic individuals)</div></div>",
-               "<div class='flex'><div class='definition'>lambda</div><div>lambda = beta * c * prev</div></div>",
+               "<div class='flex'><div class='definition'>lambda</div><div>lambda = beta * c * prev (this parameter defines the rate of infection)</div></div>",
                "<div class='flex'><div class='definition'>risk</div><div>risk multiplier</div></div>",
                "<div class='flex'><div class='definition'>epsilon</div><div>per contact vaccine efficacy; vaccine-induced reduction in the risk of HIV infection from a single exposure</div></div>",
                "</div><br/>")),
@@ -61,7 +63,8 @@ getModelDescriptionContent <- function() {
     In reality we never fully know the correct size of HIV risk subgroups (i.e. fraction of the population) or their relative contribution to overall incidence.</p>"),
     HTML("<p>The <code>risk</code> parameter (the risk multiplier) is an amalgam of increases in transmission risk that could be due to higher per-contact transmission risk,
     higher exposure rate (number of contacts), or higher prevalence of HIV viremia in partners. Individual risk of infection can vary for
-    these separately or in combination.</p>"),
+    these separately or in combination. Note that this <code>risk</code> parameter only multiplies the risk of the medium risk subgroup, and it 
+    possible (in the underlying code) for the low risk subgroup to have zero risk.</p>"),
     HTML("</div>"),
     titlePanel(htmlTemplate("template.html"))
   ))
@@ -85,7 +88,7 @@ getInitialExamplePlotsContent <- function() {
                sliderInput('epsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
                            value=0.5, step=0.1, round=FALSE),
                sliderInput('risk', 'risk (risk multiplier; relative force of infection for high risk group):', min=0, max=100,
-                           value=20, step=1, round=FALSE) 
+                           value=25, step=1, round=FALSE) 
              ),
              mainPanel(
               plotOutput("CumulativeInfectionsPlot") %>% withSpinner(color="#0dc5c1"),
@@ -120,10 +123,10 @@ getParameterSweepContent <- function() {
                            value=0.5, step=0.05, round=FALSE),
                sliderInput('sweepPropHigh', 'proportion high risk:', min=0.01, max=0.5,
                            value=0.1, step=0.1, round=FALSE),
-               sliderInput('sweepN', 'population size:', min=0, max=10000,
+               sliderInput('sweepN', 'size of each trial arm:', min=0, max=10000,
                            value=5000, step=500, round=FALSE),
-               sliderInput('sweepInc', 'annual incidence (%)', min=0.5, max=8,
-                           value=4, step=0.5, round=FALSE),
+               sliderInput('sweepInc', 'annual incidence (%)', min=0.5, max=6,
+                           value=3, step=0.5, round=FALSE),
                sliderInput('sweepNsteps', 'time (1 to 5 years):', min=1, max=5,
                            value=3, step=1, round=FALSE),
                class = "slider"
@@ -135,9 +138,9 @@ getParameterSweepContent <- function() {
                On the left is clinical vaccine efficacy measured using cumulative incidence.
                On the right is clinical vaccine efficacy measured using instantaneous incidence, or hazard."),
                plotlyOutput("plotOld2") %>% withSpinner(color="#0dc5c1"),
-               p("Figure 2."), 
+               p("Figure 2. The effect of varying the overall incidence in a vaccine trial population."), 
                plotlyOutput("plotOld3") %>% withSpinner(color="#0dc5c1"),
-               p("Figure 3."), 
+               p("Figure 3. The effect of varying the per-exposure vaccine efficacy (epsilon) in a vaccine trial population."), 
                class = "plotPanel"
              ),
            HTML("</div>"),
