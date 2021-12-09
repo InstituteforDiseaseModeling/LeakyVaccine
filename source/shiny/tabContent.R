@@ -7,7 +7,7 @@ getAboutContent <- function() {
                    
     HTML("<div class='mainPanel main'>"),
     p("This is an online tool to explore the effects of exposure heterogeneity on HIV vaccine efficacy."),
-    p("It is hypothesized that exposure heterogeneity can affect estimates of vaccine efficacy for leaky vaccines, (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."),
+    p("It is hypothesized that exposure heterogeneity can affect estimates of vaccine efficacy for leaky vaccines, (e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al.,2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018.)"),
     p("Note that exposure heterogeneity, i.e. variation among individuals in the risk of infection, is most commonly discussed as variation in the number of HIV exposures. 
       it can also include variation in the individual per-contact risk of acquisition, perhaps due to co-infections, viral load in the source individual
       or host genetics."),
