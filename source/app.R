@@ -12,7 +12,6 @@ library(shinythemes)
 library(shinycssloaders)
 
 source("model/ve_sim.R")
-source("model/ve_sim_fns.R")
 source("model/sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
@@ -56,10 +55,10 @@ server <- function(input, output, session) {
   # below are the reactiveValues for the Model Fitting tab
   #--------------------------------------------------
   
-  observe({reac$lambdaTest = input$lambdaTest})  
-  observe({reac$epsilonTest = input$epsilonTest}) 
-  observe({reac$riskTest = input$riskTest}) 
-  observe({reac$numExecution = input$numExecution}) 
+  #observe({reac$lambdaTest = input$lambdaTest})  
+  #observe({reac$epsilonTest = input$epsilonTest}) 
+  #observe({reac$riskTest = input$riskTest}) 
+  #observe({reac$numExecution = input$numExecution}) 
   
   #----------------------
   # plots for the Initial Examples tab
@@ -95,7 +94,7 @@ ui <- navbarPage(
   theme = shinytheme("cerulean"),
   
   #tabs
-  getWelcomeContent(),
+  getAboutContent(),
   getModelDescriptionContent(),
   getInitialExamplePlotsContent(),
   getParameterSweepContent()
