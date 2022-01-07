@@ -19,7 +19,6 @@
   
   .code {
     padding: 2px 10px;
-    //font-size: 90%;
     color:cornflowerblue;
     background-color:#efefef;
     border-radius: 4px;
@@ -28,38 +27,37 @@
     margin-left: auto;
     display:flex;
     flex-direction: column;
-    //justify-content: center;
-    
+
   }
   
   .flex {
     display: flex;
   }
   
-  
-  @media (min-width: 0px) {
-    .plotPanel {
-      height:calc(100vh - 422px);
-      overflow-y:auto;
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .plotPanel {
-      height:calc(100vh - 220px);
-      overflow-y:auto;
-    }
-  }
-  
-  @media (min-width: 973px) {
-    .plotPanel {
-      height:calc(100vh - 170px);
-      overflow-y:auto;
-    }
-  }
-  
   .slider {
-    height:calc(100vh - 230px);
+    height:calc(100vh - 280px);
     overflow-y: auto;
+  }
+  
+  .initialSampleTextHeader {
+    padding-left: 30px;
+    padding-bottom:30px;
+    width:100%;
+  }
+  
+  /* side Panel */
+  @media (min-width: 768px) {
+    .mainInitialExampleContent > div:first-of-type  {
+      position: sticky;
+      position: -webkit-sticky;
+      top: 110px;
+    }
+  }
+  .mainInitialExampleContent {
+    width: 100%;
+  }
+  
+  .mainInitialExampleContent > div:last-of-type  {
+      margin-bottom: 100px;
   }
   

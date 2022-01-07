@@ -78,6 +78,12 @@ getModelDescriptionContent <- function() {
 getInitialExamplePlotsContent <- function() {
   tabPanel("Initial example plots", 
            HTML("<div class='mainPanel'>"),
+             mainPanel(
+               p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+               class = "initialSampleTextHeader"
+             ),
+            mainPanel(
+             #class = "mainPanel",
              sidebarPanel(  
                sliderInput('beta', 'beta (per-contact transmission probability):', min=0.001, max=0.01,
                            value=0.004, step=0.001, round=-4),
@@ -88,7 +94,8 @@ getInitialExamplePlotsContent <- function() {
                sliderInput('epsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
                            value=0.5, step=0.1, round=FALSE),
                sliderInput('risk', 'risk (risk multiplier; relative force of infection for high risk group):', min=0, max=100,
-                           value=25, step=1, round=FALSE) 
+                           value=25, step=1, round=FALSE),
+               class="sidePanel"
              ),
              mainPanel(
               plotOutput("CumulativeInfectionsPlot") %>% withSpinner(color="#0dc5c1"),
@@ -102,6 +109,8 @@ getInitialExamplePlotsContent <- function() {
               Remember that the per-exposure vaccine is the value of the epsilon slider on the left."),
               class = "plotPanel"
              ),
+             class = "mainInitialExampleContent"
+            ),
            HTML("</div>"),
            titlePanel(htmlTemplate("template.html"))
            
@@ -116,6 +125,11 @@ getInitialExamplePlotsContent <- function() {
 getParameterSweepContent <- function() {
   tabPanel("Parameter sweeps", 
            HTML("<div class='mainPanel'>"),
+           mainPanel(
+             p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+             class = "initialSampleTextHeader"
+           ),
+           mainPanel(
              sidebarPanel(  
                sliderInput('sweepRiskMultiplier', 'risk (risk multiplier; relative force of infection for high risk group):', min=1, max=50,
                            value=15, step=1, round=FALSE),
@@ -129,7 +143,7 @@ getParameterSweepContent <- function() {
                            value=3, step=0.5, round=FALSE),
                sliderInput('sweepNsteps', 'time (1 to 5 years):', min=1, max=5,
                            value=3, step=1, round=FALSE),
-               class = "slider"
+               class = "sidePanel"
              ),
              
              mainPanel(
@@ -143,6 +157,8 @@ getParameterSweepContent <- function() {
                p("Figure 3. The effect of varying the per-exposure vaccine efficacy (epsilon) in a vaccine trial population."), 
                class = "plotPanel"
              ),
+             class = "mainInitialExampleContent"
+           ),
            HTML("</div>"),
            titlePanel(htmlTemplate("template.html"))
            

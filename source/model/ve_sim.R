@@ -16,6 +16,11 @@ library(viridis)
 ## Helper functions
 #source("model/ve_sim_fns.R")
 
+plotTheme <- theme(
+  axis.text.y = element_text(angle=45,size=8),
+  axis.title.x= element_text(angle=1),
+  axis.text.x= element_text(size=8))
+
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Run simulation with different proportions in high risk group
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -76,12 +81,14 @@ runSimByPropHigh <- function(param) {
   ve_by_prop_high <- ggplot(data = out, aes(x = step, y = value, group = prop_high)) +
     geom_line(aes(color = prop_high)) +
     geom_abline(intercept = epsilon, slope = 0, linetype = "dashed") +
-    scale_color_viridis(name = "Proportion high risk") +
+    scale_color_viridis(name = "Proportion\nhigh risk") +
     labs(x = "Time (days)", y = "Estimated vaccine efficacy") +
-    scale_y_continuous(limits = c(0, 01.0), breaks = seq(0, 1, by = 0.1)) +
+    scale_y_continuous(limits = c(0, epsilon+0.1), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
     ggtitle(paste("Overall incidence = ", inc, "VE =", epsilon, "Risk Multiplier =", risk)) +
-    theme_classic()
+    theme_classic() +
+    plotTheme
+      
   
   return (ve_by_prop_high)
 }
@@ -146,10 +153,11 @@ runSimByInc <- function(param) {
     geom_abline(intercept = epsilon, slope = 0, linetype = "dashed") +
     scale_color_viridis(name = "Incidence") +
     labs(x = "Time (days)", y = "Estimated vaccine efficacy") +
-    scale_y_continuous(limits = c(0, 0.5), breaks = seq(0, 1, by = 0.1)) +
+    scale_y_continuous(limits = c(0, epsilon+ 0.1), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
     ggtitle(paste("Prop high = ", prop_high, "VE =", epsilon, "Risk Multiplier =", risk)) +
-    theme_classic()
+    theme_classic() +
+    plotTheme
   
   return (ve_by_inc)
   
@@ -218,7 +226,8 @@ runSimByEpsilon <- function(param) {
     # scale_y_continuous(limits = c(0, 0.5), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
     ggtitle(paste("Prop high = ", prop_high, "Incidence =", inc, "Risk Multiplier =", risk)) +
-    theme_classic()
+    theme_classic() + 
+    plotTheme
   
   ## Plot
   #browser()
