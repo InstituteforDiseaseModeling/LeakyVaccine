@@ -57,4 +57,7 @@
     width: 100%;
   }
   
+  .mainInitialExampleContent > div:last-of-type  {
+      margin-bottom: 100px;
+  }
   
