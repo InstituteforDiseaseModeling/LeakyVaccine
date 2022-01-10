@@ -13,11 +13,13 @@ library(shinycssloaders)
 
 source("model/ve_sim.R")
 source("model/sim_fns.R")
+source("model/ve_sim_fns.R")
 source("shiny/tabContent.R")
 source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
 source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
+source("shiny/cookieDialog.R")
 
 server <- function(input, output, session) {
   
@@ -99,8 +101,7 @@ ui <- navbarPage(
   getInitialExamplePlotsContent(),
   getParameterSweepContent()
   #getCalibrationContent(),
-  #getModelFittingTab()
-  
+  #getModelFittingTab(),
 )
 
 
