@@ -19,7 +19,6 @@ source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
 source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
-source("shiny/cookieDialog.R")
 
 server <- function(input, output, session) {
   
