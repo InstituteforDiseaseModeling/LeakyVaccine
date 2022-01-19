@@ -6,7 +6,6 @@ library(shinyStore)
 
 showGDPRDialog <- function(session, input) {
   
-  #browser()
   if (is.null(input$store$GDPR)) {
     gdprDialog <- modalDialog(
       easyClose = FALSE,
@@ -27,7 +26,7 @@ showGDPRDialog <- function(session, input) {
 initGDPR <- function(session, input) {
   
   observeEvent(input$ok, {
-    updateStore(session,"GDPR", '123')
+    updateStore(session,"GDPR", 'accepted')
     removeModal()
   })
   
