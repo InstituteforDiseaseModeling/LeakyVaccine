@@ -20,12 +20,12 @@ source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
 source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
-source("shiny/gdprDialog.R")
+#source("shiny/gdprDialog.R")
 
 server <- function(input, output, session) {
   
   #init GDPR dialog
-  initGDPR(session, input)
+  #initGDPR(session, input)
   updateTabsetPanel(session, "page-nav", "About")
   
   #-------------------------------------------------------------------------
@@ -101,7 +101,7 @@ ui <- navbarPage(
       actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton"),
       
       #use for initializing web local storage
-      initStore("store", "idm")
+      #initStore("store", "idm")
       
     ),
     tags$script(src = "leakyVaccine.js"),
