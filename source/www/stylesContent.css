@@ -57,7 +57,16 @@
     width: 100%;
   }
   
-  .mainInitialExampleContent > div:last-of-type  {
-      margin-bottom: 100px;
+  .GDPR_dialog {
+    color: white;  
+    background-color: black;
+    text-align: center;
+    
   }
+  
+  .GDPR_title {
+    font-weight: bold;
+  }
+  
+
   

@@ -10,6 +10,7 @@ library(survival)
 library(EasyABC)
 library(shinythemes)
 library(shinycssloaders)
+library(shinyStore)
 
 source("model/ve_sim.R")
 source("model/sim_fns.R")
@@ -19,9 +20,12 @@ source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
 source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
+source("shiny/gdprDialog.R")
 
 server <- function(input, output, session) {
   
+  #init GDPR dialog
+  initGDPR(session, input)
   updateTabsetPanel(session, "page-nav", "About")
   
   #-------------------------------------------------------------------------
@@ -64,7 +68,7 @@ server <- function(input, output, session) {
   #----------------------
   # plots for the Initial Examples tab
   #----------------------
-  
+
   createCumulativeInfectionsPlot(output, reac)
   createPlaceboRiskPlot(output,reac)
   #createPlaceboVaccinePlot(output,reac)
@@ -76,31 +80,45 @@ server <- function(input, output, session) {
   # for the infobutton content
   observeEvent(input$infobutton, {
     createLicenseDialog()
+    
   })
   
+
+
+  
 }
+
+
 
 #------------------------------------------------------------------------------
 # for creating UI
 #------------------------------------------------------------------------------
 ui <- navbarPage(
-  
-  tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
-    tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css"),
-    actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton")
-  ),
-  title ="Leaky vaccines and exposure heterogeneity",
-  id = "page-nav",
-  theme = shinytheme("cerulean"),
-  
-  #tabs
-  getAboutContent(),
-  getModelDescriptionContent(),
-  getInitialExamplePlotsContent(),
-  getParameterSweepContent()
-  #getCalibrationContent(),
-  #getModelFittingTab(),
+     
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
+      tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css"),
+      actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton"),
+      
+      #use for initializing web local storage
+      initStore("store", "idm")
+      
+    ),
+    tags$script(src = "leakyVaccine.js"),
+    title = "Leaky vaccines and exposure heterogeneity",
+    id = "page-nav",
+    theme = shinytheme("cerulean"),
+
+    
+    #tabs
+    getAboutContent(), 
+    getModelDescriptionContent(),
+    getInitialExamplePlotsContent(),
+    getParameterSweepContent()
+    
+    #getCalibrationContent(),
+    #getModelFittingTab(),
+    
 )
 
 
