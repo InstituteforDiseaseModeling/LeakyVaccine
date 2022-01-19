@@ -10,7 +10,7 @@ library(survival)
 library(EasyABC)
 library(shinythemes)
 library(shinycssloaders)
-library(shinyStore)
+#library(shinyStore)
 
 source("model/ve_sim.R")
 source("model/sim_fns.R")
@@ -117,7 +117,7 @@ ui <- navbarPage(
     getParameterSweepContent()
     
     #getCalibrationContent(),
-    #getModelFittingTab(),
+    #getModelFittingTab()
     
 )
 
