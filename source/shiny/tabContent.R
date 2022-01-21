@@ -197,27 +197,33 @@ getModelFittingTab <- function() {
   tabPanel("Model fitting", 
            
            HTML("<div class='mainPanel'>"),
-           sidebarPanel(  
-             sliderInput('lambdaTest', 'lambda:', min=0.000005, max=0.0001,
-                         value=0.000028, step=0.000001, round=FALSE),
-             sliderInput('epsilonTest', 'epilson:', min=0.0, max=1.0,
-                         value=0.40, step=0.05, round=FALSE),
-             sliderInput('riskTest', 'risk:', min=0, max=30,
-                         value=10.0, step=1, round=FALSE),
-             sliderInput('numExecution', '# of execution:', min=50, max=200,
-                         value=100, step=50, round=FALSE),
-             class = "slider"
-           ),
-           
            mainPanel(
-             p("What combinations of per-exposure VE and risk heterogeneity are consistent with specific clinical HIV trial VEs?."),
-             plotOutput("plotTestLambdaRisk")  %>% withSpinner(color="#0dc5c1"),
-             p("..."),
-             plotOutput("plotTestEspilonRisk")  %>% withSpinner(color="#0dc5c1"),
-             p("..."),
-             plotOutput("plotTestEpsilonLambda")  %>% withSpinner(color="#0dc5c1"),
-             class = "plotPanel"
+             p("The plots below allow you to ..."),
+             class = "initialSampleTextHeader"
+           ),
+           mainPanel(
+             sidebarPanel(  
+               sliderInput('lambdaTest', 'lambda:', min=0.000005, max=0.0001,
+                           value=0.000028, step=0.000001, round=FALSE),
+               sliderInput('epsilonTest', 'epilson:', min=0.0, max=1.0,
+                           value=0.40, step=0.05, round=FALSE),
+               sliderInput('riskTest', 'risk:', min=0, max=30,
+                           value=10.0, step=1, round=FALSE),
+               sliderInput('numExecution', '# of execution:', min=50, max=200,
+                           value=100, step=50, round=FALSE),
+               class = "slider"
+             ),
              
+             mainPanel(
+               p("What combinations of per-exposure VE and risk heterogeneity are consistent with specific clinical HIV trial VEs?."),
+               plotOutput("plotTestLambdaRisk")  %>% withSpinner(color="#0dc5c1"),
+               p("..."),
+               plotOutput("plotTestEspilonRisk")  %>% withSpinner(color="#0dc5c1"),
+               p("..."),
+               plotOutput("plotTestEpsilonLambda")  %>% withSpinner(color="#0dc5c1"),
+               class = "plotPanel"
+               
+             ),class = "mainInitialExampleContent"
            ),
            HTML("</div>"),
            titlePanel(htmlTemplate("template.html"))
