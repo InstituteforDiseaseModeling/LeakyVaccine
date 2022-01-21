@@ -10,7 +10,7 @@ library(survival)
 library(EasyABC)
 library(shinythemes)
 library(shinycssloaders)
-library(shinyStore)
+#library(shinyStore)
 
 source("model/ve_sim.R")
 source("model/sim_fns.R")
@@ -20,6 +20,7 @@ source("shiny/sim_plots.R")
 source("shiny/Paul-visualization.R")
 source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
+source("model/Paul-lib.R") 
 #source("shiny/gdprDialog.R")
 
 server <- function(input, output, session) {
@@ -60,11 +61,11 @@ server <- function(input, output, session) {
   # below are the reactiveValues for the Model Fitting tab
   #--------------------------------------------------
   
-  #observe({reac$lambdaTest = input$lambdaTest})  
-  #observe({reac$epsilonTest = input$epsilonTest}) 
-  #observe({reac$riskTest = input$riskTest}) 
-  #observe({reac$numExecution = input$numExecution}) 
-  
+  observe({reac$lambdaTest = input$lambdaTest})
+  observe({reac$epsilonTest = input$epsilonTest})
+  observe({reac$riskTest = input$riskTest})
+  observe({reac$numExecution = input$numExecution})
+
   #----------------------
   # plots for the Initial Examples tab
   #----------------------
@@ -114,10 +115,10 @@ ui <- navbarPage(
     getAboutContent(), 
     getModelDescriptionContent(),
     getInitialExamplePlotsContent(),
-    getParameterSweepContent()
+    getParameterSweepContent(),
     
     #getCalibrationContent(),
-    #getModelFittingTab(),
+    getModelFittingTab()
     
 )
 

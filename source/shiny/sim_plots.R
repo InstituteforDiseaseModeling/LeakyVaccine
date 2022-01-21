@@ -51,7 +51,7 @@ createPlaceboVaccineRiskPlot <- function(output, reac) {
     plot(mod, y=c("rate.Placebo", "rate.Vaccine", "rate.Placebo.het", "rate.Vaccine.het"),
          alpha = 0.8,
          ylim = c(0, 6.0),
-         main = "HIV incidence",
+         main = "Incidence in placebo and vaccine arms",
          xlab = "days",
          ylab = "infections per 100 person yrs",
          legend = FALSE,
@@ -74,7 +74,7 @@ createVEPlot <- function(output, reac) {
        main = "Clinical vaccine efficacy",
        legend = FALSE, 
        xlab = "days",
-       ylab = "Vaccine efficacy",
+       ylab = "Clinical vaccine efficacy",
        col = c("blue", "red"))
     legend("topright", inset = c(-0.2,0), y.intersp=2, 
            legend = c("VE, \nhomogeneous risk", "VE, \nheterogeneous risk"), col = c("blue", "red"), lwd = 2, cex = 0.9, bty = "n")
