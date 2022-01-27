@@ -21,6 +21,7 @@ source("shiny/Paul-visualization.R")
 source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
 source("model/Paul-lib.R") 
+source("shiny/modelResultTable.R")
 #source("shiny/gdprDialog.R")
 
 server <- function(input, output, session) {
@@ -84,7 +85,8 @@ server <- function(input, output, session) {
     
   })
   
-
+  #for show model result table from RDA file
+  showModelResultTable(output)
 
   
 }
@@ -118,7 +120,8 @@ ui <- navbarPage(
     getParameterSweepContent(),
     
     #getCalibrationContent(),
-    getModelFittingTab()
+    getModelFittingTab(),
+    getTestTab()
     
 )
 
