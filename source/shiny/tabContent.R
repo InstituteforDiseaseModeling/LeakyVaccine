@@ -231,5 +231,21 @@ getModelFittingTab <- function() {
   )
 }
 
+getTestTab <- function() {
+  tabPanel("test", 
+           
+           #HTML("<div class='mainPanel'>test</div>"),
+           mainPanel(
+             uiOutput("table1"),
+             uiOutput("table2")
+             
+           ),
+           titlePanel(htmlTemplate("template.html"))
+           
+  )
+}
+
+
+
 
 
