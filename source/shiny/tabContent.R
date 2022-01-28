@@ -198,8 +198,8 @@ getModelFittingTab <- function() {
            
            HTML("<div class='mainPanel'>"),
            mainPanel(
-             p("Here we use our model to identify what combinations of lambda (the overall rate of infection), risk (the risk multiplier for the high risk subgroup), and epsilon (the per-exposure vaccine efficacy) can produce pre-specified vaccine trial outcomes.
-               The pre-specified outcomes, or target statistics, that we focus on are: 1. incidence in the placebo arm; and 2. the clinical vaccine efficacy. What these plots show are the parameter combinations that, when input into our model, 
+             p("Here we use our model to identify what combinations of lambda (the overall rate of infection), risk (the risk multiplier for the high risk subgroup), and epsilon (the per-exposure vaccine efficacy) can produce pre-specified vaccine trial outcomes."),
+             p("The pre-specified outcomes, or target statistics, that we focus on are: 1. incidence in the placebo arm; and 2. the clinical vaccine efficacy. What these plots show are the parameter combinations that, when input into our model, 
                result in model outputs closest to our target statistics. In short, the plots show that in some cases there are multiple different values of infection rate, risk, and per-exposure vaccine efficacy that
                are consistent with a single vaccine trial outcome."),
              class = "initialSampleTextHeader"
