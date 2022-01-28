@@ -198,9 +198,15 @@ getModelFittingTab <- function() {
            
            HTML("<div class='mainPanel'>"),
            mainPanel(
-             p("Here we use our model to identify what combinations of lambda (the overall rate of infection), risk (the risk multiplier for the high risk subgroup), and epsilon (the per-exposure vaccine efficacy) can produce pre-specified vaccine trial outcomes.
-               The pre-specified outcomes, or target statistics, that we focus on are: 1. incidence in the placebo arm; and 2. the clinical vaccine efficacy. What these plots show are the parameter combinations that, when input into our model, 
-               result in model outputs closest to our target statistics. In short, the plots show that in some cases there are multiple different values of infection rate, risk, and per-exposure vaccine efficacy that
+             p("Here we use our model to identify what combinations of lambda (the overall rate of infection), risk (the risk multiplier for the high risk subgroup), and epsilon (the per-exposure vaccine efficacy) can produce pre-specified vaccine trial outcomes."),
+             p("By 'pre-specified outcomes' we actually mean 'target statistics' for a model calibration. We use only two target statistics:"),
+             p("1. incidence in the placebo arm of a vaccine trial; and"), 
+             p("2. the clinical vaccine efficacy."),
+             p("We use a parameter exploration/model calibration method in which we try many different values for each parameter 
+             (the number of tries is controlled by the 'executions' slider, below), and record the model output for each combination. 
+             What the contour plots show, then, are the combinations of parameter values that, when input into our vaccine trial model, 
+               result in model outputs (placebo incidence and clinical VE) that can be compared to our target statistics."), 
+             p("T contoru plots below show that in some cases there are multiple different values of infection rate, risk, and per-exposure vaccine efficacy that
                are consistent with a single vaccine trial outcome."),
              class = "initialSampleTextHeader"
            ),
@@ -212,7 +218,7 @@ getModelFittingTab <- function() {
                            value=0.40, step=0.05, round=FALSE),
                sliderInput('riskTest', 'risk:', min=0, max=30,
                            value=10.0, step=1, round=FALSE),
-               sliderInput('numExecution', '# of execution:', min=50, max=200,
+               sliderInput('numExecution', '# of model executions:', min=50, max=200,
                            value=100, step=50, round=FALSE),
                class = "slider"
              ),
