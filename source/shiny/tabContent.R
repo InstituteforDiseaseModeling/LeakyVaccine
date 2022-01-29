@@ -206,6 +206,10 @@ getModelFittingTab <- function() {
            ),
            mainPanel(
              sidebarPanel(  
+               sliderInput('placeboIncidenceTarget', 'Placebo incidence target:', min=0.5, max=5.0,
+                           value=3.5, step=0.5, round=FALSE),
+               sliderInput('veTarget', 'VE Target:', min=0.0, max=1.0,
+                           value=0.1, step=0.05, round=FALSE),
                sliderInput('lambdaTest', 'lambda:', min=0.000005, max=0.0001,
                            value=0.000028, step=0.000001, round=FALSE),
                sliderInput('epsilonTest', 'epilson:', min=0.0, max=1.0,
@@ -241,10 +245,13 @@ getTestTab <- function() {
            
            #HTML("<div class='mainPanel'>test</div>"),
            mainPanel(
-             uiOutput("table1"),
-             uiOutput("table2")
-             
+             p("placeholder text...", class="paragraph"),
+             uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
+             p("placeholder text ...", class="paragraph")  ,
+             plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1")
+            
            ),
+           
            titlePanel(htmlTemplate("template.html"))
            
   )
