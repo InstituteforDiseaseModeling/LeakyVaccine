@@ -198,28 +198,39 @@ getModelFittingTab <- function() {
            
            HTML("<div class='mainPanel'>"),
            mainPanel(
-             p("The plots below allow you to ..."),
-             class = "initialSampleTextHeader"
+             p("Here we use our model to identify what combinations of lambda (the overall rate of infection), risk (the risk multiplier for the high risk subgroup), and epsilon (the per-exposure vaccine efficacy) can produce pre-specified vaccine trial outcomes."),
+             p("By 'pre-specified outcomes' we actually mean 'target statistics' for a model calibration. We use only two target statistics:"),
+             p("1. incidence in the placebo arm of a vaccine trial; and"), 
+             p("2. the clinical vaccine efficacy."),
+             p("We use a parameter exploration/model calibration method in which we try many different values for each parameter 
+             (the number of tries is controlled by the 'executions' slider, below), and record the model output for each combination. 
+             What the contour plots show, then, are the combinations of parameter values that, when input into our vaccine trial model, 
+               result in model outputs (placebo incidence and clinical VE) that can be compared to our target statistics."), 
+          class = "initialSampleTextHeader"
            ),
            mainPanel(
              sidebarPanel(  
+               sliderInput('placeboIncidenceTarget', 'Placebo incidence target:', min=0.5, max=5.0,
+                           value=3.5, step=0.5, round=FALSE),
+               sliderInput('veTarget', 'VE Target:', min=0.0, max=1.0,
+                           value=0.1, step=0.05, round=FALSE),
                sliderInput('lambdaTest', 'lambda:', min=0.000005, max=0.0001,
                            value=0.000028, step=0.000001, round=FALSE),
                sliderInput('epsilonTest', 'epilson:', min=0.0, max=1.0,
                            value=0.40, step=0.05, round=FALSE),
                sliderInput('riskTest', 'risk:', min=0, max=30,
                            value=10.0, step=1, round=FALSE),
-               sliderInput('numExecution', '# of execution:', min=50, max=200,
+               sliderInput('numExecution', '# of model executions:', min=50, max=200,
                            value=100, step=50, round=FALSE),
                class = "slider"
              ),
              
              mainPanel(
-               p("What combinations of per-exposure VE and risk heterogeneity are consistent with specific clinical HIV trial VEs?."),
+               p("What combinations of lambda (overall infection rate) and risk heterogeneity are consistent with specific clinical HIV trial VEs?"),
                plotOutput("plotTestLambdaRisk")  %>% withSpinner(color="#0dc5c1"),
-               p("..."),
+               p("What combinations of per-exposure VE and risk heterogeneity are consistent with specific clinical HIV trial VEs?"),
                plotOutput("plotTestEspilonRisk")  %>% withSpinner(color="#0dc5c1"),
-               p("..."),
+               p("What combinations of per-exposure VE and lambda are consistent with specific clinical HIV trial VEs?"),
                plotOutput("plotTestEpsilonLambda")  %>% withSpinner(color="#0dc5c1"),
                class = "plotPanel"
                
@@ -231,15 +242,20 @@ getModelFittingTab <- function() {
   )
 }
 
+
+
 getTestTab <- function() {
   tabPanel("test", 
            
            #HTML("<div class='mainPanel'>test</div>"),
            mainPanel(
-             uiOutput("table1"),
-             uiOutput("table2")
-             
+             p("placeholder text...", class="paragraph"),
+             uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
+             p("placeholder text ...", class="paragraph")  ,
+             plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1")
+            
            ),
+           
            titlePanel(htmlTemplate("template.html"))
            
   )

@@ -1,4 +1,5 @@
-source( "Paul-lib-threegroup.R" )
+#setwd("~/source/LeakyVaccineIDM/source/model")
+source( "model/Paul-lib-threegroup.R" )
 
 hvtn705.parameters <- paste( "hvtn705", trial.parameters, sep = "." );
 all.parameters <- c( common.parameters, hvtn705.parameters );
@@ -645,7 +646,7 @@ exploreSimResults_hvtn705 <- function( reac = c( "zoomFactor" = 10 ) ) {
     the.distance.fn <- make.optim.fn( target.stats, target.stat.stdevs );
 
     # get "sim.results"
-    load( "sim.results.hvtn705.100k.threegroup.Rda" )
+    load( "data/sim.results.hvtn705.100k.threegroup.Rda" )
 
     # For example, print the first 5 entries in the results table:
     #print( sim.results$sampled.modes[, 1:5] );
@@ -735,10 +736,10 @@ set.seed( the.seed );
 # .sim <- runSim_hvtn705( reac = c( "numExecution" = num.sims ) );
 
 # This explores results. Try this.
-reac <- = c( "zoomFactor" = 10000 );
-pdf( paste( "starting_example_plot_showing_distance_zoom", reac[ "zoomFactor" ], ".pdf", sep = "" ) );
-exploreSimResults_hvtn705( reac )
-dev.off();
+# reac <- c( "zoomFactor" = 10000 );
+# pdf( paste( "starting_example_plot_showing_distance_zoom", reac[ "zoomFactor" ], ".pdf", sep = "" ) );
+# exploreSimResults_hvtn705( reac )
+# dev.off();
 
 
 ###################################################################################################

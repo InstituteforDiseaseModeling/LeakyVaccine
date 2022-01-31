@@ -22,6 +22,7 @@ source("shiny/licenseDialog.R")
 source("model/modelFitting.R")
 source("model/Paul-lib.R") 
 source("shiny/modelResultTable.R")
+source("model/Paul-threegroup-hvtn705-lib.R")
 #source("shiny/gdprDialog.R")
 
 server <- function(input, output, session) {
@@ -62,6 +63,8 @@ server <- function(input, output, session) {
   # below are the reactiveValues for the Model Fitting tab
   #--------------------------------------------------
   
+  observe({reac$placeboIncidenceTarget = input$placeboIncidenceTarget})
+  observe({reac$veTarget = input$veTarget})
   observe({reac$lambdaTest = input$lambdaTest})
   observe({reac$epsilonTest = input$epsilonTest})
   observe({reac$riskTest = input$riskTest})
