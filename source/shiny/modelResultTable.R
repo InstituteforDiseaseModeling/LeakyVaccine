@@ -13,10 +13,11 @@ showModelResultTable <- function (output) {
     sim.results$sampled.modes
   })
   
-  # output$table2 <- renderTable(rownames = TRUE, colnames = FALSE,  {
-  #   fitRejHvtn705Data()
-  #   browser()
-  #   sim.results$sampled.modes
-  # })
+  
+  output$hvtn705distance <- renderPlot( {
+    reac <- c( "zoomFactor" = 10000 )
+    exploreSimResults_hvtn705(reac)
+  })
+  
 
 }

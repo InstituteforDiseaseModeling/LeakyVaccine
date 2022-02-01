@@ -7,22 +7,22 @@ getAboutContent <- function() {
                    
     HTML("<div class='mainPanel main'>"),
     p("This is an online tool to explore the effects of exposure heterogeneity on HIV vaccine efficacy, given a leaky vaccine."),
-    p("A potential outcome of exposure heterogeneity is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). This distinction, between the per-exposure vaccine efficacy and the clinical efficacy, or the population effectiveness, of the same vaccine, is our focus."),
-    p("Many authors have previously explored this issue, e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al., 2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."), 
-    p("From M. Gomes et al., 2016:  \"This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission.\"  "),
-    p("Here we use simple epidemic models to explore this issue, within and across populations, in the context of HIV prevention trials or longitudinal studies. Our goals are to:"),
+    p("A potential outcome of pathogen exposure heterogeneity (i.e. variation among individuals in the risk of getting infected) is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). 
+      This distinction, between the per-exposure vaccine efficacy and the clinical efficacy of the same vaccine, is the focus of this tool. Many authors have explored this issue, e.g. Halloran et al., 1992; White et al., 2010; O'Hagan et al., 2013; Edlefsen, 2014; Coley et al., 2016; Gomes et al., 2016; Kahn et al., 2018."),
+    p("Here we use a simple epidemic model with exposure heterogeneity to simulate an HIV vaccine trial. Our goals are to:"),
     HTML("<ol type='1'>"),
-    HTML("<li>Raise awareness of the distinction between per-exposure vaccine efficacy, clinical vaccine efficacy, and population vaccine effectiveness.</li>"),
-    HTML("<li>Assess if this effect might contribute to the difference between the RV144 and HVTN 702 vaccine trial outcomes.</li>"),
-    #HTML("<li>In acute infection studies it seems like many participants get infected early. What is the magnitude of this effect that might be due to frailty bias?</li>"),
-    HTML("<li>Assist in the design or interpretation of HIV prevention trials, from this exposure heterogeneity framework.</li>"),
+    HTML("<li>Raise awareness of the distinction between per-exposure vaccine efficacy, clinical vaccine efficacy, and population vaccine effectiveness</li>"),
+    HTML("<li>Assess if this effect might contribute to the difference between the RV144, HVTN 702, and HVTN 705 vaccine trial outcomes</li>"),
+    HTML("<li>Assist in the design or interpretation of HIV prevention trials, from this exposure heterogeneity perspective, and</li>"),
+    HTML("<li>Use this framework as a means to explore HIV infection risk; more specifically, to delineate differences among individuals in HIV risk that is due to variation in per-exposure infection probability, HIV prevalence in a contact network, or the number of sexual contacts.</li>"),
     HTML("</ol>"),
     p("The separate tabs in this R Shiny app include:"),
     HTML("<ol type='1'>"),
     HTML("<li>Model description, showing the structure of the model and the parameters included.</li>"),
     HTML("<li>Initial example plots, showing how the model works and what simulated epidemic and trial outputs we focus on.</li>"),
     HTML("<li>Parameter sweeps, which allows you to compare the impact of multiple parameter values in the same plots.</li>"),
-    HTML("<li>Model fitting, in which we use the model to examine specific trial results.</li>"),
+    HTML("<li>Model fitting example, which allows you to use the model to examine specific trial results.</li>"),
+    HTML("<li>Model fitting output, which shows parameter combos that are consistent with a given trial result.</li>"),
     HTML("</ul>"),
     HTML("</div>"),
     titlePanel(htmlTemplate("template.html"))
@@ -103,7 +103,7 @@ getInitialExamplePlotsContent <- function() {
               p("Figure 3. Incidence in the placebo and vaccine arms of a trial, for populations with homogeneous risk and heterogeneous risk."),
               plotOutput("VEPlot") %>% withSpinner(color="#0dc5c1"),
               p("Figure 4. Clinical vaccine efficacy over time in two vaccine trial population trials, one with homogeneous risk and the other with heterogeneous risk. 
-              Remember that the per-exposure vaccine is the value of the epsilon slider on the left."),
+              Remember that the per-exposure vaccine efficacy is the value of the epsilon slider on the left."),
               class = "plotPanel"
              ),
              class = "mainInitialExampleContent"
@@ -202,19 +202,24 @@ getModelFittingTab <- function() {
              p("By 'pre-specified outcomes' we actually mean 'target statistics' for a model calibration. We use only two target statistics:"),
              p("1. incidence in the placebo arm of a vaccine trial; and"), 
              p("2. the clinical vaccine efficacy."),
-             p("We use a parameter exploration/model calibration method in which we try many different values for each parameter 
-             (the number of tries is controlled by the 'executions' slider, below), and record the model output for each combination. 
-             What the contour plots show, then, are the combinations of parameter values that, when input into our vaccine trial model, 
-               result in model outputs (placebo incidence and clinical VE) that can be compared to our target statistics."), 
+             p("We use a parameter exploration method in which we try many different values for each model input parameter 
+             (the number of tries is controlled by the 'executions' slider, below) and record the model output for each combination. 
+             The best parameter combinations (i.e. the modes) are found by rejection sampling, based on minimizing the euclidean distance between the target parameters and the simulation results, 
+             followed by local optimization. What the contour plots show, then, are the combinations of parameter values that, when input into our vaccine trial model, 
+             result in model outputs (placebo incidence and clinical VE) that are closest to our target statistics."), 
           class = "initialSampleTextHeader"
            ),
            mainPanel(
              sidebarPanel(  
-               sliderInput('lambdaTest', 'lambda:', min=0.000005, max=0.0001,
+               sliderInput('placeboIncidenceTarget', 'Placebo incidence target value:', min=0.5, max=5.0,
+                           value=3.5, step=0.5, round=FALSE),
+               sliderInput('veTarget', 'Clinical vaccine efficacy (VE) target value:', min=0.0, max=1.0,
+                           value=0.1, step=0.05, round=FALSE),
+               sliderInput('lambdaTest', 'lambda (overall force of infection; model input):', min=0.000005, max=0.0001,
                            value=0.000028, step=0.000001, round=FALSE),
-               sliderInput('epsilonTest', 'epilson:', min=0.0, max=1.0,
+               sliderInput('epsilonTest', 'epsilon (per-exposure vaccine efficacy; model input):', min=0.0, max=1.0,
                            value=0.40, step=0.05, round=FALSE),
-               sliderInput('riskTest', 'risk:', min=0, max=30,
+               sliderInput('riskTest', 'risk (risk multiplier for high risk group; model input):', min=0, max=30,
                            value=10.0, step=1, round=FALSE),
                sliderInput('numExecution', '# of model executions:', min=50, max=200,
                            value=100, step=50, round=FALSE),
@@ -241,14 +246,17 @@ getModelFittingTab <- function() {
 
 
 getTestTab <- function() {
-  tabPanel("test", 
+  tabPanel("Model fitting for HVTN 705", 
            
-           #HTML("<div class='mainPanel'>test</div>"),
+           HTML("<div class='mainPanel'>HVTN 705 model fitting results</div>"),
            mainPanel(
-             uiOutput("table1"),
-             uiOutput("table2")
-             
+             p("This table shows the results of our model fitting runs where we used HVTN placebo incidence and clinical efficacy as the target stats in our rejection sampling calibration runs.", class="paragraph"),
+             uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
+             p("Matrix of distances between model runs and target statss", class="paragraph")  ,
+             plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1")
+            
            ),
+           
            titlePanel(htmlTemplate("template.html"))
            
   )
