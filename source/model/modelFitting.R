@@ -70,14 +70,15 @@ si_odeFn <- function(times, init, param){
 # sim execution
 #------------------------------------------------------------------------------
 runSim_Paul <- function(reac) {
+  
   #time <- c(180,360,540,720,900,1080)  # every 6 months for 3 years
   time <- 3*365; # End of the trial.
   
   ## Note here actually want to target the average incidence over time, rather than the incidence at the end of the trial, since with multiple risk groups there is waning expected. I have changed this in the ABC function f, below.
-  placebo.incidence.target <- rep( 3.5, length( time ) )    # flat incidence of 3.5% per 100 person years
+  placebo.incidence.target <- rep( reac$placeboIncidenceTarget, length( time ) )    # flat incidence of 3.5% per 100 person years
   
   ### Paul notes this is not going to work, if efficacy is waning you can't match a constant efficacy over time. We should match just one time, probably duration of 702 trial.
-  VE.target <- rep(0.1, length( time ))
+  VE.target <- rep(reac$veTarget, length( time ))
   target.stats <- data.frame(time, VE.target, placebo.incidence.target )
   
   ## Outside of a function
