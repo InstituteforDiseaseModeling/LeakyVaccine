@@ -69,7 +69,7 @@ si_odeFn <- function(times, init, param){
 #------------------------------------------------------------------------------
 # sim execution
 #------------------------------------------------------------------------------
-runSim_Paul <- function(reac) {}
+runSim_Paul <- function(reac) {
   
   #time <- c(180,360,540,720,900,1080)  # every 6 months for 3 years
   time <- 3*365; # End of the trial.
