@@ -79,5 +79,14 @@
   .paragraph {
     margin: 10px 0px;
   }
+  
+  .modelDescription code {
+    color:cornflowerblue;
+    background-color: #efefef;
+  }
+  
+  .modelDescription, .aboutTab {
+    margin-bottom:84px;
+  }
 
   
