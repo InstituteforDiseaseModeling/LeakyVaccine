@@ -4,7 +4,7 @@
 #------------------------------------------------------------------------------
 getAboutContent <- function() {
   return(tabPanel("About",
-                   
+    class="aboutTab",
     HTML("<div class='mainPanel main'>"),
     p("This is an online tool to explore the effects of exposure heterogeneity on HIV vaccine efficacy, given a leaky vaccine."),
     p("A potential outcome of pathogen exposure heterogeneity (i.e. variation among individuals in the risk of getting infected) is that vaccine efficacy measured from a trial (i.e. the clinical efficacy) is lower than the biological vaccine efficacy (i.e. the per-exposure or per-contact vaccine efficacy). 
@@ -40,7 +40,7 @@ getModelDescriptionContent <- function() {
     h3("Model structure"),
     p("We model a vaccine trial using an SI deterministic compartmental model; this is a simple epidemic model that has two populations, the Susceptible (S) and the Infected (I).
     We start the model with all trial individuals in the S group; over time S individuals move into the I group as they become infected."), 
-    p("The full model code and more details are here: https://github.com/InstituteforDiseaseModeling/LeakyVaccine#readme."),
+    HTML("<p>More details are on IDM's Github repo <a href='https://github.com/InstituteforDiseaseModeling/LeakyVaccine#readme.' target='blank'>here.</a></p>"),
     HTML("<p>Note that this is specfically a vaccine trial model and not a more commonly used epidemic model (e.g. there are no births or deaths, and no recovery); we are not modeling infections from the I to S compartments, but rather only infections from a theoretical, un-modeled, outside (non-trial) population.
     We do this with one parameter, <code>lambda</code>, which is the rate that individuals in S get infected (move to I). This model structure also removes the possibility of indirect effects from vaccination.</p>"),
     h3("Parameters"),
