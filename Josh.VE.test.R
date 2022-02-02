@@ -15,8 +15,8 @@ infection.probs <- function(lambda, exposures, epsilon){
 
 df <- infection.probs(lambda, exposures, epsilon)
 
-plot(log10(exposures), df$placebo.infection.probability)
-
+plot(log10(exposures), df$placebo.infection.probability, col = "red")
+points()
 
 
 
