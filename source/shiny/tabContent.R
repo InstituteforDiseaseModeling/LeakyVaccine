@@ -255,8 +255,8 @@ getTestTab <- function() {
              p("This table shows the results of our model fitting runs where we used HVTN placebo incidence and clinical efficacy as the target stats in our rejection sampling calibration runs.", class="paragraph"),
              uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
              h3("Matrix of distances between model runs and target stats"),
-             plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1")
-            
+             plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1"),
+             class = "plotPanel"
            ),
            
            titlePanel(htmlTemplate("template.html"))
