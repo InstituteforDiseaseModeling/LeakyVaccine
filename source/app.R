@@ -111,7 +111,7 @@ ui <- navbarPage(
       
     ),
     tags$script(src = "leakyVaccine.js"),
-    tags$script(src = "gtag.js"),
+    #tags$script(src = "gtag.js"),
     
     title = "Leaky vaccines and exposure heterogeneity",
     id = "page-nav",
@@ -126,7 +126,7 @@ ui <- navbarPage(
     
     #getCalibrationContent(),
     getModelFittingTab(),
-    getTestTab()
+    getHVTN705Tab()
     
 )
 

@@ -89,4 +89,14 @@
     margin-bottom:84px;
   }
 
+  .HVTN705Tab {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom:84px;
+  }
   
+  .HVTN705Container {
+    margin:0 auto;
+    max-width:1000px;
+  }
