@@ -23,12 +23,12 @@ source("model/modelFitting.R")
 source("model/Paul-lib.R") 
 source("shiny/modelResultTable.R")
 source("model/Paul-threegroup-hvtn705-lib.R")
-#source("shiny/gdprDialog.R")
+source("shiny/gdprDialog.R")
 
 server <- function(input, output, session) {
   
   #init GDPR dialog
-  #initGDPR(session, input)
+  initGDPR(session, input)
   updateTabsetPanel(session, "page-nav", "About")
   
   #-------------------------------------------------------------------------
@@ -107,10 +107,12 @@ ui <- navbarPage(
       actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton"),
       
       #use for initializing web local storage
-      #initStore("store", "idm")
+      initStore("store", "idm")
       
     ),
     tags$script(src = "leakyVaccine.js"),
+    tags$script(src = "gtag.js"),
+    
     title = "Leaky vaccines and exposure heterogeneity",
     id = "page-nav",
     theme = shinytheme("cerulean"),

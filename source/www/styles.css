@@ -63,7 +63,7 @@
 		display: inline-block;
 		position: relative;
 		margin: 0px 15px 0px 15px;
-		font-size: 14px;
+		font-size: 13px;
 		text-align: right;
 		color: #b8860b;
 		overflow: hidden;
@@ -78,7 +78,7 @@
 		display: flex;
 		flex-direction: column;
 		flex-start: flex-end;
-		margin: 14px 15px;
+		margin: 10px 15px;
 
 	}
 	.leftrow {
@@ -240,8 +240,5 @@
     padding:5px;
   }
   
-  .modelDescription code {
-    color:cornflowerblue;
-    background-color: #efefef;
-  }
+
 
