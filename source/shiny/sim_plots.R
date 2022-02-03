@@ -35,7 +35,7 @@ createPlaceboRiskPlot <- function(output, reac) {
          legend = FALSE,
          col = c("blue", "red"))
     legend("bottomright", inset = c(-0.23,0),
-           legend = c("homogen. risk", "heterogen. risk"), col = c("blue", "red"), lwd = 2, cex = 0.9, bty = "n")
+           legend = c("homogeneous risk", "heterogeneous risk"), col = c("blue", "red"), lwd = 2, cex = 0.9, bty = "n")
     
     par(mfrow=c(1,1))
   })
