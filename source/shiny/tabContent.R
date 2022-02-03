@@ -246,21 +246,21 @@ getModelFittingTab <- function() {
 
 
 
-getTestTab <- function() {
+getHVTN705Tab <- function() {
   tabPanel("Model fitting for HVTN 705", 
-           
-           
-           mainPanel(
-             h3("HVTN 705 model fitting results"),
-             p("This table shows the results of our model fitting runs where we used HVTN placebo incidence and clinical efficacy as the target stats in our rejection sampling calibration runs.", class="paragraph"),
-             uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
-             h3("Matrix of distances between model runs and target stats"),
-             plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1"),
-             class = "plotPanel"
+           class="HVTN705Tab",
+           div(
+             div(
+               h3("HVTN 705 model fitting results"),
+               p("This table shows the results of our model fitting runs where we used HVTN placebo incidence and clinical efficacy as the target stats in our rejection sampling calibration runs.", class="paragraph"),
+               uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
+               h3("Matrix of distances between model runs and target stats"),
+               plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1"),
+               class="HVTN705Container"
+             )
            ),
            
            titlePanel(htmlTemplate("template.html"))
-           
   )
 }
 
