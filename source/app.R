@@ -120,13 +120,12 @@ ui <- navbarPage(
     
     #tabs
     getAboutContent(), 
-    getModelDescriptionContent(),
     getInitialExamplePlotsContent(),
     getParameterSweepContent(),
-    
-    #getCalibrationContent(),
     getModelFittingTab(),
-    getHVTN705Tab()
+    getHVTN705Tab(),
+    getModelDescriptionContent()
+    
     
 )
 
