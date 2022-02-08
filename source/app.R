@@ -33,7 +33,7 @@ server <- function(input, output, session) {
   
   #-------------------------------------------------------------------------
   # below are the reactiveValues for the Parameter Sweeps tab
-  #-------------------------------------------------------------------------
+  #--------------------------------------------------------®-----------------
   reacSweep <- reactiveValues()
   
   observe({reacSweep$riskMultiplier = input$sweepRiskMultiplier})
@@ -89,7 +89,7 @@ server <- function(input, output, session) {
   })
   
   #for show model result table from RDA file
-  showModelResultTable(output)
+  showModelResultTable(input, output)
 
   
 }
