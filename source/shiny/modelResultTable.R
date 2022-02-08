@@ -1,4 +1,3 @@
-library(DT)
 
 showModelResultTable <- function (input, output) {
 
@@ -9,8 +8,7 @@ showModelResultTable <- function (input, output) {
   #                                   filePath = "./data/fit.rej.hvtn705.100k.threegroup.Rda", load, 
   #                                   envir = .GlobalEnv)
 
-  #input$hvtn705column <- 1;
-  
+
   output$table1 <- renderUI({
 
     hvtn705Data();
