@@ -88,7 +88,7 @@ getInitialExamplePlotsContent <- function() {
                sliderInput('contactRate', 'c (sexual contacts per day):', min=0.001, max=1,
                            value=90/365, step=0.01, round=FALSE),
                sliderInput('prev', 'prev (population prevalence of viremic individuals):', min=0.001, max=0.3,
-                           value=0.10, step=0.1, round=FALSE),
+                           value=0.10, step=0.01, round=FALSE),
                sliderInput('epsilon', 'epsilon (per-exposure vaccine efficacy):', min=0, max=1,
                            value=0.5, step=0.1, round=FALSE),
                sliderInput('risk', 'risk (risk multiplier; relative force of infection for high risk group):', min=0, max=100,
@@ -253,7 +253,8 @@ getHVTN705Tab <- function() {
              div(
                h3("HVTN 705 model fitting results"),
                p("This table shows the results of our model fitting runs where we used HVTN placebo incidence and clinical efficacy as the target stats in our rejection sampling calibration runs.", class="paragraph"),
-               uiOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
+               #dataTableOutput("table1", class="hvtn705table") %>% withSpinner(color="#0dc5c1"),
+               uiOutput("table1") %>% withSpinner(color="#0dc5c1"),
                h3("Matrix of distances between model runs and target stats"),
                plotOutput("hvtn705distance") %>% withSpinner(color="#0dc5c1"),
                class="HVTN705Container"

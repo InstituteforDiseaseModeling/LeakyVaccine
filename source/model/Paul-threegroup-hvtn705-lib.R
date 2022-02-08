@@ -313,7 +313,7 @@ optimize.iteratively <- function ( current.parameters, target.stats, target.stat
 exploreSimResults_hvtn705.create.params.list <- function ( reac ) {
     stopifnot( all( c( "zoomFactor" ) %in% names( reac ) ) );
 
-    reac[ "numExecution" ]  <- 100000; # matching the files we hardcode in exploreSimResults_hvtn705(..)
+    reac["numExecution"]  <- 100000; # matching the files we hardcode in exploreSimResults_hvtn705(..)
     params.list  <- runSim_hvtn705.create.params.list( reac );
 
     params.list[[ "the.zoom.factor" ]]  <- unname( reac[ "zoomFactor" ] );
@@ -324,7 +324,7 @@ exploreSimResults_hvtn705.create.params.list <- function ( reac ) {
 runSim_hvtn705.create.params.list <- function ( reac ) {
     stopifnot( all( c( "numExecution" ) %in% names( reac ) ) );
 
-    num.sims  <- unname( reac[ "numExecution" ] );
+    num.sims  <-  unname(reac["numExecution"]);
 
     ######################################################################
     ##### PARAMETERS / MAGIC #s -- MANY COULD BE EXPOSED FOR TUNING.
@@ -631,7 +631,7 @@ modify.x  <- function ( x, dim.x1, x1.val, dim.x2, x2.val ) {
     return( modified.x );
 } # modify.x (..)
 
-exploreSimResults_hvtn705 <- function( reac = c( "zoomFactor" = 10 ) ) {
+exploreSimResults_hvtn705 <- function( reac = c( "zoomFactor" = 10 ), hvtn705column ) {
 
     params.list <- exploreSimResults_hvtn705.create.params.list( reac );
     attach( params.list, name = "params.list" );
@@ -650,14 +650,14 @@ exploreSimResults_hvtn705 <- function( reac = c( "zoomFactor" = 10 ) ) {
 
     # For example, print the first 5 entries in the results table:
     #print( sim.results$sampled.modes[, 1:5] );
-
     # For example, choose a mode (ordered by distance) and plot it.
-    which.mode <- 1;
-
+    
+    which.mode <- hvtn705column;
+    
     print( sim.results$sampled.modes[, which.mode] );
 
     x  <- unlist( ( sim.results$sampled.modes )[ , which.mode ] )
-
+    
     num.plot.points <- 10;
     # Here plot.points just spans the range of the bounds. See below where we might use something different.
     plot.points  <- ( sapply( 1:length( bounds ), function( i ) { seq( from=bounds[[i]][ 1 ], to=bounds[[i]][ 2 ], by = diff( bounds[[i]] )/num.plot.points ) } ) );
