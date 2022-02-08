@@ -1,13 +1,16 @@
 
 #beta <- 0.003   # per-exposure infection probability
-exposures <- seq(1, 1000, by=1)
+#(1 - beta)  # per-exposure probability of remaining negative
+#(1 - beta)^exposures  # probability of remaining negative after # of exposures
+#1 - (1 - beta)^(exposures) # probability of infection after # of exposures
+
 #epsilon = 0.3
-#infection.probability <- 1 - (1 - beta)^(exposures)
+exposures <- seq(1, 1000, by=1)
 
 # Function to calculate cumulative infection probabilities
 infection.probs <- function(beta, exposures, epsilon){
   placebo.infection.probability <- 1 - (1 - beta)^exposures
-  vaccine.infection.probability <- 1 - (1 - beta*(1-epsilon))^exposures
+  vaccine.infection.probability <- 1 - (1 - (1-epsilon)*beta)^exposures
   df <- as.data.frame(cbind(placebo.infection.probability, vaccine.infection.probability))
   df$VE <- 1 - (df$vaccine.infection.probability/df$placebo.infection.probability)
   df$exposures <- exposures
