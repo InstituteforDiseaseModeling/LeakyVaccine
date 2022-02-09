@@ -124,8 +124,7 @@ ui <- navbarPage(
     getParameterSweepContent(),
     getModelFittingTab(),
     getHVTN705Tab(),
-    getModelDescriptionContent(),
-    
+    getModelDescriptionContent()
     
 )
 
