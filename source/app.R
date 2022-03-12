@@ -33,7 +33,7 @@ server <- function(input, output, session) {
   
   #-------------------------------------------------------------------------
   # below are the reactiveValues for the Parameter Sweeps tab
-  #-------------------------------------------------------------------------
+  #--------------------------------------------------------®-----------------
   reacSweep <- reactiveValues()
   
   observe({reacSweep$riskMultiplier = input$sweepRiskMultiplier})
@@ -89,7 +89,7 @@ server <- function(input, output, session) {
   })
   
   #for show model result table from RDA file
-  showModelResultTable(output)
+  showModelResultTable(input, output)
 
   
 }
@@ -104,15 +104,15 @@ ui <- navbarPage(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
       tags$link(rel = "stylesheet", type = "text/css", href = "stylesContent.css"),
+      tags$script(src="googleAnalytics.js"),
+      tags$script(src = "leakyVaccine.js"),
+      tags$body(HTML("<noscript><iframe src=https://www.googletagmanager.com/ns.html?id=GTM-PVSDR65 height='0' width='0' style='display:none;visibility:hidden'></iframe></noscript>")),
       actionButton(label="", inputId = "infobutton",  width="35px" ,icon = icon("info-circle", class="infoIcon"), class = "infoIconButton"),
       
       #use for initializing web local storage
       initStore("store", "idm")
       
     ),
-    tags$script(src = "leakyVaccine.js"),
-    #tags$script(src = "gtag.js"),
-    
     title = "Leaky vaccines and exposure heterogeneity",
     id = "page-nav",
     theme = shinytheme("cerulean"),
@@ -125,7 +125,6 @@ ui <- navbarPage(
     getModelFittingTab(),
     getHVTN705Tab(),
     getModelDescriptionContent()
-    
     
 )
 
