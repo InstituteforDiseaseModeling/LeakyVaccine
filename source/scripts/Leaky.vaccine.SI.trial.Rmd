@@ -90,14 +90,14 @@ si_ode <- function(times, init, param){
     
     #Susceptible, Infected, placebo, high, medium, low
     SIph.flow <- risk*lambda*Sph
-    SIpm.flow <- lambda*Spl
+    SIpm.flow <- lambda*Spm
     SIpl.flow <- 0*lambda*Spl  #0 to give this group zero exposures
     
     #Susceptible, Infected, vaccine, high, medium, low
     SIvh.flow <- risk*lambda*(1-epsilon)*Svh
     ### Paul found this line has a bug:
     ### SIvm.flow <- lambda*(1-epsilon)*Spl
-    SIvm.flow <- lambda*(1-epsilon)*Svl
+    SIvm.flow <- lambda*(1-epsilon)*Svm
     SIvl.flow <- 0*lambda*(1-epsilon)*Svl  #0 to give this group zero exposures
     
     # ODEs
@@ -145,13 +145,13 @@ si_ode <- function(times, init, param){
 
 ```{r parameters}
 
-beta <- 0.004   #transmission rate (per contact)
+beta <- 0.002   #transmission rate (per contact)
 c <- 90/365    #contact rate (contacts per day)
 prev <- 0.10    #needs some more consideration
 #prev <- 0.01
 lambda <- beta*c*prev
 #lambda <- 8e-06
-epsilon <- 0.30  #per contact vaccine efficacy
+epsilon <- 0.50  #per contact vaccine efficacy
 risk <- 10.0   #risk multiplier
 ```
 
@@ -159,9 +159,10 @@ risk <- 10.0   #risk multiplier
 
 We are using the EpiModel framework, http://www.epimodel.org/, with help from Sam Jenness (Emory University).  
   
-```{r EpiModel}
+```{r EpiModel_deterministic}
 
-param <- param.dcm(lambda = lambda, epsilon = epsilon, risk = risk)
+#param <- param.dcm(lambda = lambda, epsilon = epsilon, risk = risk)
+param <- param.dcm(beta = beta, c = c, prev = prev, epsilon = epsilon, risk = risk)
 init <- init.dcm(Sp = 5000, Ip = 0,
                  Sv = 5000, Iv = 0,
                  Sph = 500, Iph = 0,    #placebo, high risk
@@ -175,11 +176,32 @@ init <- init.dcm(Sp = 5000, Ip = 0,
                  SIvh.flow = 0, SIvm.flow = 0, SIvl.flow = 0)
 
 control <- control.dcm(nsteps = 365*3, new.mod = si_ode)
-mod <- dcm(param, init, control)
-mod
+mod.det <- dcm(param, init, control)
+#mod.det
 
 ```
 
+
+```{r EpiModel_stochastic}
+
+param <- param.icm(beta = beta, c = c, prev = prev, epsilon = epsilon, risk = risk)
+init <- init.icm(Sp = 5000, Ip = 0,
+                 Sv = 5000, Iv = 0,
+                 Sph = 500, Iph = 0,    #placebo, high risk
+                 Spm = 4000, Ipm = 0,   #placebo, medium risk
+                 Spl = 500, Ipl = 0,    #placebo, low risk
+                 Svh = 500, Ivh = 0,    #vaccine
+                 Svm = 4000, Ivm = 0,   #vaccine
+                 Svl = 500, Ivl = 0,    #vaccine
+                 SIp.flow = 0, SIv.flow = 0, 
+                 SIph.flow = 0, SIpm.flow = 0, SIpl.flow = 0,
+                 SIvh.flow = 0, SIvm.flow = 0, SIvl.flow = 0)
+
+control <- control.icm(nsteps = 365*3, new.mod = si_ode, nsims = 100)
+mod.sto <- icm(param, init, control)
+#mod.sto
+
+```
 ### Data manipulation; VE estimates  
 
 ```{r data}
@@ -227,9 +249,9 @@ mod <- mutate_epi(mod, VE2.cumul = 1 - cumul.rate.Vaccine.het/cumul.rate.Placebo
 
 This hypothetical example has shows that exposure heterogeneity in a simplified HIV vaccine trial can result in waning *realized* vaccine efficacy, even as the per-contact vaccine efficacy remains stable. Also note that exposure heterogeneity in a longitudinal study population may result in elevated incidence in the early stages of the study, as the high risk subgroup is depleted more quickly than the medium and low risk subgroups.  
    
-```{r plots}
+```{r plots_deterministic}
 
-mod <- mod.manipulate(mod)
+mod <- mod.manipulate(mod.det)
 
 par(mar = c(3,3,2,1), mgp = c(2,1,0))
 plot(mod, y = c("Iv", "Ip", "total.Ivh.Ivm.Ivl", "total.Iph.Ipm.Ipl"), 
@@ -264,7 +286,56 @@ legend("topright", legend = c("Instantanteous VE, homogeneous risk", "Inst VE, h
 
 ```
 
-*To do: time-to-event data from my model via survival curves* 
+```{r plots_stochastic}
+
+mod <- mod.manipulate(mod.sto)
+
+par(mar = c(3,3,2,1), mgp = c(2,1,0))
+plot(mod, y = c("Iv", "Ip", "total.Ivh.Ivm.Ivl", "total.Iph.Ipm.Ipl"), 
+     alpha = 0.8, 
+     main = "Cumulative infections",
+     legend = "full")
+plot(mod, y = c("SIv.flow", "SIp.flow", "SIvh.flow", "SIvm.flow", "SIvl.flow", "SIph.flow", "SIpm.flow", "SIpl.flow"), 
+     alpha = 0.8, 
+     main = "Daily infections, w/ all risk groups shown",
+     legend = "full")
+plot(mod, y = c("SIv.flow", "SIp.flow", "total.SIvh.SIvm.SIvl.flow", "total.SIph.SIpm.SIpl.flow"),
+     alpha = 0.8, 
+     main = "Daily infections, total mixed risk group",
+     legend = "full")
+plot(mod, y=c("rate.Vaccine", "rate.Placebo", "rate.Vaccine.het", "rate.Placebo.het"),
+     alpha = 0.8,
+     #ylim = c(0, 0.1),
+     main = "Instantaneous incidence rate",
+     legend = "full")
+plot(mod, y=c("cumul.rate.Vaccine", "cumul.rate.Placebo", "cumul.rate.Vaccine.het", "cumul.rate.Placebo.het"),
+     alpha = 0.8,
+     #ylim = c(0, 0.1),
+     main = "Cumulative incidence rate",
+     legend = "full")
+plot(mod, y=c("VE1.inst", "VE2.inst", "VE1.cumul", "VE2.cumul"),
+     alpha = 0.8,
+     main = "Vaccine efficacy",
+     legend = FALSE, 
+     col = 1:4)
+legend("topright", legend = c("Instantanteous VE, homogeneous risk", "Inst VE, heterogeneous risk", "Cumulative VE, homogeneous risk", "Cumul VE, heterogeneous risk"),
+       col = 1:4, lwd = 2, cex = 0.9, bty = "n")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Model calibration with ABC
 
@@ -316,7 +387,7 @@ Set up the function to wrap the EpiModel functions and make the incidence output
 ```{r easyABC.input.model}
 
 f <- function(x) {
-  param <- param.dcm(beta = 0.004, 
+  param <- param.dcm(beta = 0.002, 
                      c = 90/365,
                      prev = 0.10,    
                      #lambda = beta*c*prev,
