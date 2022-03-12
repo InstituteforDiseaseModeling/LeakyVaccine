@@ -1,8 +1,8 @@
 
 #beta <- 0.003   # per-exposure infection probability
 #(1 - beta)  # per-exposure probability of remaining negative
-#(1 - beta)^exposures  # probability of remaining negative after # of exposures
-#1 - (1 - beta)^(exposures) # probability of infection after # of exposures
+#(1 - beta)^N  # probability of remaining negative after N exposures
+#1 - (1 - beta)^N # probability of infection after N exposures
 
 #epsilon = 0.3
 exposures <- seq(1, 1000, by=1)
