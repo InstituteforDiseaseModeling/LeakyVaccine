@@ -19,7 +19,6 @@
   
   .code {
     padding: 2px 10px;
-    //font-size: 90%;
     color:cornflowerblue;
     background-color:#efefef;
     border-radius: 4px;
@@ -28,38 +27,109 @@
     margin-left: auto;
     display:flex;
     flex-direction: column;
-    //justify-content: center;
-    
+
   }
   
   .flex {
     display: flex;
   }
   
-  
-  @media (min-width: 0px) {
-    .plotPanel {
-      height:calc(100vh - 422px);
-      overflow-y:auto;
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .plotPanel {
-      height:calc(100vh - 220px);
-      overflow-y:auto;
-    }
-  }
-  
-  @media (min-width: 973px) {
-    .plotPanel {
-      height:calc(100vh - 170px);
-      overflow-y:auto;
-    }
-  }
-  
   .slider {
-    height:calc(100vh - 230px);
+    height:calc(100vh - 280px);
     overflow-y: auto;
   }
   
+  .initialSampleTextHeader {
+    padding-left: 30px;
+    padding-bottom:30px;
+    width:100%;
+  }
+  
+  /* side Panel */
+  @media (min-width: 768px) {
+    .mainInitialExampleContent > div:first-of-type  {
+      position: sticky;
+      position: -webkit-sticky;
+      top: 110px;
+    }
+  }
+  .mainInitialExampleContent {
+    width: 100%;
+  }
+  
+  .GDPR_dialog {
+    color: white;  
+    background-color: black;
+    text-align: center;
+    
+  }
+  
+  .GDPR_title {
+    font-weight: bold;
+  }
+  
+  .plotPanel {
+    margin-bottom:84px;
+  }
+  
+  .hvtn705table {
+    overflow-x: scroll;
+  }
+  
+  .paragraph {
+    margin: 10px 0px;
+  }
+  
+  .modelDescription code {
+    color:cornflowerblue;
+    background-color: #efefef;
+  }
+  
+  .modelDescription, .aboutTab {
+    margin-bottom:84px;
+  }
+
+  .HVTN705Tab {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom:84px;
+  }
+  
+  .HVTN705Container {
+    margin:0 auto;
+    max-width:1000px;
+  }
+  
+  .cell {
+    min-width: 50px;
+  }
+  
+  .hvtn705table {
+    min-height:200px;
+  }
+  
+  .tableContainer {
+    max-width: 1100px;
+    overflow-x:scroll;
+    margin-left:190px;
+  }
+  
+  .tableContainer td {
+    text-align: end;
+  }
+
+  .selectButton {
+    margin:3px;
+  }
+  
+  .headcol {
+    position: absolute;
+    width: 5em;
+    left: 0;
+    top: auto;
+    border-top-width: 1px;
+    /*only relevant for first row*/
+    margin-top: -1px;
+    /*compensate for top border*/
+  }

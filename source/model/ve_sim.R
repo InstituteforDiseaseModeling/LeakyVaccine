@@ -14,19 +14,25 @@ library(ggplot2)
 library(viridis)
 
 ## Helper functions
-source("model/ve_sim_fns.R")
+#source("model/ve_sim_fns.R")
+
+plotTheme <- theme(
+  axis.text.y = element_text(angle=45,size=8),
+  axis.title.x= element_text(angle=1),
+  axis.text.x= element_text(size=8))
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Run simulation with different proportions in high risk group
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 runSimByPropHigh <- function(param) {
-  
-  beta <- param$beta        # transmission rate (per contact)
-  c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
-  prev <- param$prev        # needs some more consideration
-  lambda <- beta*c*prev
-  1-exp(-lambda*365)        # Annual risk 
+  # beta <- param$beta        # transmission rate (per contact)
+  # c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
+  # prev <- param$prev        # needs some more consideration
+  # lambda <- beta*c*prev
+  # 1-exp(-lambda*365)        # Annual risk 
+  risk <- param$riskMultiplier ## Multiplier for high risk group infection risk relatvie to low risk group
   epsilon <- param$epsilon  # per contact vaccine efficacy
+  # prop_high <- param$propHigh
   n <- param$sampleSize     # Population (sample) size
   inc <- param$inc          # Overall estimated annual risk to calibrate to
   nsteps <- param$nsteps  
@@ -37,10 +43,10 @@ runSimByPropHigh <- function(param) {
   
   for(prop_high in prop_highs) {
     
-    ## Calculate risk multiplier
-    risk <- uniroot(calc_inc, prop_high = prop_high, lambda = lambda, inc = inc, c(0, 1000), tol = 0.0001)$root
-    print(prop_high)
-    print(risk)
+    ## Calculate lambda
+    lambda <- uniroot(calc_inc, prop_high = prop_high, risk = risk, inc = inc, c(1e-7, 1), tol = 1e-7)$root
+    print(paste("Proportion high risk =", prop_high))
+    print(paste("Low risk incidence (solved for by uniroot) =",  signif(1-exp(-lambda*365), 2)))
     
     init <- init.dcm(Sp = n, Ip = 0,
                      Sv = n, Iv = 0,
@@ -55,9 +61,9 @@ runSimByPropHigh <- function(param) {
     
     
     param <- param.dcm(lambda = lambda, epsilon = epsilon, inc = inc, prop_high = prop_high, risk = risk, n=n)
-    print("before mod")
+    # print("before mod")
     mod <- dcm(param, init, control)
-    print ("after mod")
+    # print ("after mod")
     mod
     
     mod <- mod.manipulate(mod)
@@ -75,12 +81,14 @@ runSimByPropHigh <- function(param) {
   ve_by_prop_high <- ggplot(data = out, aes(x = step, y = value, group = prop_high)) +
     geom_line(aes(color = prop_high)) +
     geom_abline(intercept = epsilon, slope = 0, linetype = "dashed") +
-    scale_color_viridis(name = "Proportion high risk") +
+    scale_color_viridis(name = "Proportion\nhigh risk") +
     labs(x = "Time (days)", y = "Estimated vaccine efficacy") +
-    scale_y_continuous(limits = c(0, 0.5), breaks = seq(0, 1, by = 0.1)) +
+    scale_y_continuous(limits = c(0, epsilon+0.1), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
-    ggtitle(paste("Incidence = ", inc, "VE =", epsilon)) +
-    theme_classic()
+    ggtitle(paste("Overall incidence = ", inc, "VE =", epsilon, "Risk Multiplier =", risk)) +
+    theme_classic() +
+    plotTheme
+      
   
   return (ve_by_prop_high)
 }
@@ -90,28 +98,30 @@ runSimByPropHigh <- function(param) {
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 runSimByInc <- function(param) {
   
-  beta <- param$beta        # transmission rate (per contact)
-  c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
-  prev <- param$prev        # needs some more consideration
-  lambda <- beta*c*prev
-  1-exp(-lambda*365)        # Annual risk 
+  # beta <- param$beta        # transmission rate (per contact)
+  # c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
+  # prev <- param$prev        # needs some more consideration
+  # lambda <- beta*c*prev
+  # 1-exp(-lambda*365)        # Annual risk 
+  risk <- param$riskMultiplier ## Multiplier for high risk group infection risk relatvie to low risk group
   epsilon <- param$epsilon  # per contact vaccine efficacy
+  prop_high <- param$propHigh
   n <- param$sampleSize     # Sample size
-  inc <- param$inc          # Overall estimated annual risk to calibrate to
+  # inc <- param$inc          # Overall estimated annual risk to calibrate to
   nsteps <- param$nsteps  
   
   ## Test different incidence levels
   incs <- seq(0.01, 0.06, by = 0.005)
-  prop_high <- 0.1
+  # prop_high <- 0.1
   
   output <- data.frame(inc = rep(incs, each = nsteps), step = 1:nsteps, cum_efficacy = NA, inst_efficacy = NA)
   
   for(inc in incs) {
     
-    ## Calculate risk multiplier
-    risk <- uniroot(calc_inc, prop_high = prop_high, lambda = lambda, inc = inc, c(0, 1000), tol = 0.0001)$root
-    print(inc)
-    print(risk)
+    ## Calculate lambda
+    lambda <- uniroot(calc_inc, prop_high = prop_high, risk = risk, inc = inc, c(1e-7, 1), tol = 1e-7)$root
+    print(paste("Overall incidence: ", inc))
+    print(paste("Low risk incidence (solved for by uniroot) =",  signif(1-exp(-lambda*365), 2)))
     
     init <- init.dcm(Sp = n, Ip = 0,
                      Sv = n, Iv = 0,
@@ -143,10 +153,11 @@ runSimByInc <- function(param) {
     geom_abline(intercept = epsilon, slope = 0, linetype = "dashed") +
     scale_color_viridis(name = "Incidence") +
     labs(x = "Time (days)", y = "Estimated vaccine efficacy") +
-    scale_y_continuous(limits = c(0, 0.5), breaks = seq(0, 1, by = 0.1)) +
+    scale_y_continuous(limits = c(0, epsilon+ 0.1), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
-    ggtitle(paste("Prop high = ", prop_high, "VE =", epsilon)) +
-    theme_classic()
+    ggtitle(paste("Prop high = ", prop_high, "VE =", epsilon, "Risk Multiplier =", risk)) +
+    theme_classic() +
+    plotTheme
   
   return (ve_by_inc)
   
@@ -156,29 +167,31 @@ runSimByInc <- function(param) {
 # Run simulation with different vaccine efficacies
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 runSimByEpsilon <- function(param) {
-  beta <- param$beta        # transmission rate (per contact)
-  c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
-  prev <- param$prev        # needs some more consideration
-  lambda <- beta*c*prev
-  1-exp(-lambda*365)        # Annual risk 
-  epsilon <- param$epsilon  # per contact vaccine efficacy
+  # beta <- param$beta        # transmission rate (per contact)
+  # c <- param$contactRate    # contact rate (contacts per day). Sets underlying risk in low risk group.
+  # prev <- param$prev        # needs some more consideration
+  # lambda <- beta*c*prev
+  # 1-exp(-lambda*365)        # Annual risk 
+  risk <- param$riskMultiplier ## Multiplier for high risk group infection risk relatvie to low risk group
+  # epsilon <- param$epsilon  # per contact vaccine efficacy
   n <- param$sampleSize     # Sample size
+  prop_high <- param$propHigh
   inc <- param$inc          # Overall estimated annual risk to calibrate to
   nsteps <- param$nsteps  
   
   ## Test different vaccine efficacies
   epsilons <- seq(0.1, 0.9, by = 0.1)
-  prop_high <- 0.1
-  inc <- 0.03
+  # prop_high <- 0.1
+  # inc <- 0.03
   
   output <- data.frame(epsilon = rep(epsilons, each = nsteps), step = 1:nsteps, cum_efficacy = NA, inst_efficacy = NA)
   
   for(epsilon in epsilons) {
     
-    ## Calculate risk multiplier
-    risk <- uniroot(calc_inc, prop_high = prop_high, lambda = lambda, inc = inc, c(0, 1000), tol = 0.0001)$root
-    print(inc)
-    print(risk)
+    ## Calculate lambda
+    lambda <- uniroot(calc_inc, prop_high = prop_high, risk = risk, inc = inc, c(1e-7, 1), tol = 1e-7)$root
+    print(paste("Epsilon: ", epsilon))
+    print(paste("Low risk incidence (solved for by uniroot) =",  signif(1-exp(-lambda*365), 2)))
     
     init <- init.dcm(Sp = n, Ip = 0,
                      Sv = n, Iv = 0,
@@ -212,8 +225,9 @@ runSimByEpsilon <- function(param) {
     labs(x = "Time (days)", y = "Estimated vaccine efficacy") +
     # scale_y_continuous(limits = c(0, 0.5), breaks = seq(0, 1, by = 0.1)) +
     facet_wrap(~metric) +
-    ggtitle(paste("Prop high = ", prop_high, "Incidence =", inc)) +
-    theme_classic()
+    ggtitle(paste("Prop high = ", prop_high, "Incidence =", inc, "Risk Multiplier =", risk)) +
+    theme_classic() + 
+    plotTheme
   
   ## Plot
   #browser()
@@ -226,34 +240,3 @@ runSimByEpsilon <- function(param) {
   
   dev.off()
 }
-
-# par(mar = c(3,3,2,1), mgp = c(2,1,0))
-# plot(mod, y = c("Iv", "Ip", "total.Ivh.Ivl", "total.Iph.Ipl"), 
-#      alpha = 0.8, 
-#      main = "Cumulative infections",
-#      legend = "full")
-# plot(mod, y = c("SIv.flow", "SIp.flow", "SIvh.flow", "SIvl.flow", "SIph.flow", "SIpl.flow"), 
-#      alpha = 0.8, 
-#      main = "Daily infections, w/ all risk groups shown",
-#      legend = "full")
-# plot(mod, y = c("SIv.flow", "SIp.flow", "total.SIvh.SIvl.flow", "total.SIph.SIpl.flow"),
-#      alpha = 0.8, 
-#      main = "Daily infections, total mixed risk group",
-#      legend = "full")
-# plot(mod, y=c("rate.Vaccine", "rate.Placebo", "rate.Vaccine.het", "rate.Placebo.het"),
-#      alpha = 0.8,
-#      #ylim = c(0, 0.1),
-#      main = "Instantaneous incidence rate",
-#      legend = "full")
-# plot(mod, y=c("cumul.rate.Vaccine", "cumul.rate.Placebo", "cumul.rate.Vaccine.het", "cumul.rate.Placebo.het"),
-#      alpha = 0.8,
-#      #ylim = c(0, 0.1),
-#      main = "Cumulative incidence",
-#      legend = "full")
-# plot(mod, y=c("VE1.inst", "VE2.inst", "VE1.cumul", "VE2.cumul"),
-#      alpha = 0.8,
-#      main = "Vaccine efficacy",
-#      legend = FALSE, 
-#      col = 1:4)
-# legend("topright", legend = c("Instantanteous VE, homogeneous risk", "Inst VE, heterogeneous risk", "Cumulative VE, homogeneous risk", "Cumul VE, heterogeneous risk"),
-#        col = 1:4, lwd = 2, cex = 0.9, bty = "n")
