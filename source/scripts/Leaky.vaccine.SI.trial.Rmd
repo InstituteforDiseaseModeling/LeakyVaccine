@@ -6,7 +6,7 @@ output: github_document
 ---
 
 ```{r setup, include=TRUE}
-
+knitr::opts_chunk$set(include = FALSE)
 library(deSolve)
 library(tidyverse)
 library(EpiModel)
@@ -20,13 +20,11 @@ It is hypothesized that exposure heterogeneity (i.e. infection risk heterogeneit
 
 1. In acute infection studies it seems like many participants get infected early. What is the magnitude of this effect that might be due to frailty bias? 
 
-2. Assess if this effect might contribute to the differences between the RV 144 and HVTN 702 vaccine trial outcomes.  (There has been a couple of analyses of this, and we can build on this and make future analyses of other trial results more straightforward to evaluate.)
+2. Assess if this effect might contribute to the differences between the RV 144 and HVTN 702 and HVTN 705 vaccine trial outcomes.  (There has been a couple of analyses of this, and we can build on this and make future analyses of other trial results more straightforward to evaluate.)
 
 3. Assess if this effect might contribute to the waning efficacies seen in HIV prevention trials (specifically the AMP VRC01 bnAb trial).  
 
 4. In the context of the AMP Trial and the different results seen in the sub-studies (703 vs 704); is this due to different forces of infection between the populations?    
-
-5. Continue to raise awareness of this issue to HIV prevention trials, with the ultimate goal of better design and interpretation of efficacy outcomes.   
 
 From Gomes et al., 2016:  "This effect is more pronounced in the control group as individuals within it experience higher rates of infection overall. Consequently, the ratio of disease rates in vaccinated over control groups increases, and vaccine efficacy, as measured by simple rate ratios, decreases as the trial progresses. Finally, the magnitude of this effect increases with the intensity of transmission."  
 
@@ -145,14 +143,12 @@ si_ode <- function(times, init, param){
 
 ```{r parameters}
 
-beta <- 0.002   #transmission rate (per contact)
+beta <- 0.003   #transmission rate (per contact)
 c <- 90/365    #contact rate (contacts per day)
-prev <- 0.10    #needs some more consideration
-#prev <- 0.01
+prev <- 0.10    #needs some more consideration; viremic individuals only
 lambda <- beta*c*prev
-#lambda <- 8e-06
 epsilon <- 0.50  #per contact vaccine efficacy
-risk <- 10.0   #risk multiplier
+risk <- 15.0   #risk multiplier
 ```
 
 ### Running the model  
@@ -166,11 +162,11 @@ param <- param.dcm(beta = beta, c = c, prev = prev, epsilon = epsilon, risk = ri
 init <- init.dcm(Sp = 5000, Ip = 0,
                  Sv = 5000, Iv = 0,
                  Sph = 500, Iph = 0,    #placebo, high risk
-                 Spm = 4000, Ipm = 0,   #placebo, medium risk
-                 Spl = 500, Ipl = 0,    #placebo, low risk
+                 Spm = 3500, Ipm = 0,   #placebo, medium risk
+                 Spl = 1000, Ipl = 0,    #placebo, low risk
                  Svh = 500, Ivh = 0,    #vaccine
-                 Svm = 4000, Ivm = 0,   #vaccine
-                 Svl = 500, Ivl = 0,    #vaccine
+                 Svm = 3500, Ivm = 0,   #vaccine
+                 Svl = 1000, Ivl = 0,    #vaccine
                  SIp.flow = 0, SIv.flow = 0, 
                  SIph.flow = 0, SIpm.flow = 0, SIpl.flow = 0,
                  SIvh.flow = 0, SIvm.flow = 0, SIvl.flow = 0)
@@ -188,16 +184,16 @@ param <- param.icm(beta = beta, c = c, prev = prev, epsilon = epsilon, risk = ri
 init <- init.icm(Sp = 5000, Ip = 0,
                  Sv = 5000, Iv = 0,
                  Sph = 500, Iph = 0,    #placebo, high risk
-                 Spm = 4000, Ipm = 0,   #placebo, medium risk
-                 Spl = 500, Ipl = 0,    #placebo, low risk
+                 Spm = 3500, Ipm = 0,   #placebo, medium risk
+                 Spl = 1000, Ipl = 0,    #placebo, low risk
                  Svh = 500, Ivh = 0,    #vaccine
-                 Svm = 4000, Ivm = 0,   #vaccine
-                 Svl = 500, Ivl = 0,    #vaccine
+                 Svm = 3500, Ivm = 0,   #vaccine
+                 Svl = 1000, Ivl = 0,    #vaccine
                  SIp.flow = 0, SIv.flow = 0, 
                  SIph.flow = 0, SIpm.flow = 0, SIpl.flow = 0,
                  SIvh.flow = 0, SIvm.flow = 0, SIvl.flow = 0)
 
-control <- control.icm(nsteps = 365*3, new.mod = si_ode, nsims = 100)
+control <- control.icm(nsteps = 365*3, type = "SI", new.mod = si_ode, nsims = 100)
 mod.sto <- icm(param, init, control)
 #mod.sto
 
@@ -257,14 +253,6 @@ par(mar = c(3,3,2,1), mgp = c(2,1,0))
 plot(mod, y = c("Iv", "Ip", "total.Ivh.Ivm.Ivl", "total.Iph.Ipm.Ipl"), 
      alpha = 0.8, 
      main = "Cumulative infections",
-     legend = "full")
-plot(mod, y = c("SIv.flow", "SIp.flow", "SIvh.flow", "SIvm.flow", "SIvl.flow", "SIph.flow", "SIpm.flow", "SIpl.flow"), 
-     alpha = 0.8, 
-     main = "Daily infections, w/ all risk groups shown",
-     legend = "full")
-plot(mod, y = c("SIv.flow", "SIp.flow", "total.SIvh.SIvm.SIvl.flow", "total.SIph.SIpm.SIpl.flow"),
-     alpha = 0.8, 
-     main = "Daily infections, total mixed risk group",
      legend = "full")
 plot(mod, y=c("rate.Vaccine", "rate.Placebo", "rate.Vaccine.het", "rate.Placebo.het"),
      alpha = 0.8,
