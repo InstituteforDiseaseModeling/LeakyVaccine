@@ -178,26 +178,6 @@ mod.det <- dcm(param, init, control)
 ```
 
 
-```{r EpiModel_stochastic}
-
-param <- param.icm(beta = beta, c = c, prev = prev, epsilon = epsilon, risk = risk)
-init <- init.icm(Sp = 5000, Ip = 0,
-                 Sv = 5000, Iv = 0,
-                 Sph = 500, Iph = 0,    #placebo, high risk
-                 Spm = 3500, Ipm = 0,   #placebo, medium risk
-                 Spl = 1000, Ipl = 0,    #placebo, low risk
-                 Svh = 500, Ivh = 0,    #vaccine
-                 Svm = 3500, Ivm = 0,   #vaccine
-                 Svl = 1000, Ivl = 0,    #vaccine
-                 SIp.flow = 0, SIv.flow = 0, 
-                 SIph.flow = 0, SIpm.flow = 0, SIpl.flow = 0,
-                 SIvh.flow = 0, SIvm.flow = 0, SIvl.flow = 0)
-
-control <- control.icm(nsteps = 365*3, type = "SI", new.mod = si_ode, nsims = 100)
-mod.sto <- icm(param, init, control)
-#mod.sto
-
-```
 ### Data manipulation; VE estimates  
 
 ```{r data}
@@ -273,55 +253,6 @@ legend("topright", legend = c("Instantanteous VE, homogeneous risk", "Inst VE, h
        col = 1:4, lwd = 2, cex = 0.9, bty = "n")
 
 ```
-
-```{r plots_stochastic}
-
-mod <- mod.manipulate(mod.sto)
-
-par(mar = c(3,3,2,1), mgp = c(2,1,0))
-plot(mod, y = c("Iv", "Ip", "total.Ivh.Ivm.Ivl", "total.Iph.Ipm.Ipl"), 
-     alpha = 0.8, 
-     main = "Cumulative infections",
-     legend = "full")
-plot(mod, y = c("SIv.flow", "SIp.flow", "SIvh.flow", "SIvm.flow", "SIvl.flow", "SIph.flow", "SIpm.flow", "SIpl.flow"), 
-     alpha = 0.8, 
-     main = "Daily infections, w/ all risk groups shown",
-     legend = "full")
-plot(mod, y = c("SIv.flow", "SIp.flow", "total.SIvh.SIvm.SIvl.flow", "total.SIph.SIpm.SIpl.flow"),
-     alpha = 0.8, 
-     main = "Daily infections, total mixed risk group",
-     legend = "full")
-plot(mod, y=c("rate.Vaccine", "rate.Placebo", "rate.Vaccine.het", "rate.Placebo.het"),
-     alpha = 0.8,
-     #ylim = c(0, 0.1),
-     main = "Instantaneous incidence rate",
-     legend = "full")
-plot(mod, y=c("cumul.rate.Vaccine", "cumul.rate.Placebo", "cumul.rate.Vaccine.het", "cumul.rate.Placebo.het"),
-     alpha = 0.8,
-     #ylim = c(0, 0.1),
-     main = "Cumulative incidence rate",
-     legend = "full")
-plot(mod, y=c("VE1.inst", "VE2.inst", "VE1.cumul", "VE2.cumul"),
-     alpha = 0.8,
-     main = "Vaccine efficacy",
-     legend = FALSE, 
-     col = 1:4)
-legend("topright", legend = c("Instantanteous VE, homogeneous risk", "Inst VE, heterogeneous risk", "Cumulative VE, homogeneous risk", "Cumul VE, heterogeneous risk"),
-       col = 1:4, lwd = 2, cex = 0.9, bty = "n")
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
